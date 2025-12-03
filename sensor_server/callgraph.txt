@@ -1,0 +1,1066 @@
+app_main() <void app_main (void) at ./main/main.c:160>:
+    ESP_LOGI()
+    board_init() <void board_init (void) at ./main/board.c:53>:
+        board_led_init() <void board_led_init (void) at ./main/board.c:43>
+    nvs_flash_init()
+    ESP_ERROR_CHECK()
+    nvs_flash_erase()
+    ecolumiere_system_set_config() <void ecolumiere_system_set_config (system_config_t config) at ./ecolumiere/ecolumiere_system.c:307>:
+        ESP_LOGI()
+        print_system_configuration() <void print_system_configuration (void) at ./ecolumiere/ecolumiere_system.c:159>:
+            ESP_LOGI()
+    bluetooth_init()
+    ESP_LOGE()
+    slave_node_init() <void slave_node_init (void) at ./ecolumiere/slave_role.c:389>:
+        memset()
+        generate_device_identity() <void generate_device_identity (void) at ./ecolumiere/slave_role.c:123>:
+            get_bt_mac_address() <bool get_bt_mac_address (uint8_t *mac_addr) at ./ecolumiere/slave_role.c:36>:
+                ESP_LOGE()
+                esp_bt_dev_get_address()
+                memcpy()
+            ESP_LOGE()
+            snprintf()
+            strncpy()
+            memset()
+            memcpy()
+            ESP_LOGI()
+            generate_id_from_mac() <void generate_id_from_mac (const uint8_t *mac_addr, uint16_t *device_id, uint16_t *company_id) at ./ecolumiere/slave_role.c:58>:
+                ESP_LOGE()
+            generate_name_from_mac() <void generate_name_from_mac (const uint8_t *mac_addr, char *name_buffer, size_t buffer_size) at ./ecolumiere/slave_role.c:81>:
+                ESP_LOGE()
+                snprintf()
+            calculate_mac_crc() <uint16_t calculate_mac_crc (const uint8_t *mac_addr) at ./ecolumiere/slave_role.c:98>:
+        initialize_nodo_lampada_defaults() <void initialize_nodo_lampada_defaults (void) at ./ecolumiere/slave_role.c:292>:
+            slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+            generate_node_id_from_mac() <uint32_t generate_node_id_from_mac (const uint8_t *mac) at ./ecolumiere/slave_role.c:287>:
+            memset()
+            strncpy()
+        ESP_LOGI()
+    ecolumiere_system_init() <esp_err_t ecolumiere_system_init (void) at ./ecolumiere/ecolumiere_system.c:171>:
+        ESP_LOGI()
+        print_system_configuration() <void print_system_configuration (void) at ./ecolumiere/ecolumiere_system.c:159>:
+            ESP_LOGI()
+        storage_init() <void storage_init (void) at ./ecolumiere/storage.c:190>:
+            memset()
+            nvs_open()
+            ESP_LOGE()
+            storage_fds_evt_handler() <void storage_fds_evt_handler (uint32_t event_type, uint32_t result) at ./ecolumiere/storage.c:61>:
+                ESP_LOGD()
+            ESP_LOGI()
+        storage_ready() <bool storage_ready (void) at ./ecolumiere/storage.c:374>:
+        vTaskDelay()
+        pdMS_TO_TICKS()
+        ESP_LOGE()
+        data_recorder_init() <void data_recorder_init (void) at ./ecolumiere/datarecorder.c:56>:
+            nvs_flash_init()
+            ESP_LOGW()
+            nvs_flash_erase()
+            ESP_LOGE()
+            esp_err_to_name()
+            nvs_open()
+            slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+            strncmp()
+            strncpy()
+            nvs_get_u32()
+            nvs_set_u32()
+            nvs_commit()
+            esp_timer_get_time()
+            ESP_LOGI()
+        light_code_init() <void light_code_init (void) at ./ecolumiere/lightcode.c:156>:
+            ESP_LOGI()
+            gpio_config()
+            ESP_LOGE()
+            esp_err_to_name()
+            light_code_timer_callback() <void light_code_timer_callback (void *arg) at ./ecolumiere/lightcode.c:46>:
+                gpio_get_level()
+            esp_timer_create()
+            esp_timer_start_periodic()
+            esp_timer_delete()
+            light_code_reset_queue() <void light_code_reset_queue (void) at ./ecolumiere/lightcode.c:58>:
+                memset()
+        zero_cross_init() <esp_err_t zero_cross_init (void) at ./ecolumiere/zerocross.c:58>:
+            ESP_LOGI()
+            gpio_config()
+            gpio_install_isr_service()
+            gpio_isr_handler_add()
+            zero_cross_isr() <void IRAM_ATTR zero_cross_isr (void *arg) at ./ecolumiere/zerocross.c:27>:
+                esp_timer_get_time()
+                pwmcontroller_get_current_level() <uint16_t pwmcontroller_get_current_level (void) at ./ecolumiere/pwmcontroller.c:435>:
+                esp_timer_stop()
+                esp_timer_start_once()
+                pwm_apply_phase_controlled_duty() <void pwm_apply_phase_controlled_duty (void) at ./ecolumiere/pwmcontroller.c:442>:
+                    pwm_apply_current_sequence() <void pwm_apply_current_sequence (void) at ./ecolumiere/pwmcontroller.c:123>:
+                        ledc_set_duty()
+                        ledc_update_duty()
+                        ESP_LOGD()
+                    ESP_LOGD()
+            phase_timer_callback() <void phase_timer_callback (void *arg) at ./ecolumiere/zerocross.c:20>:
+                pwm_apply_phase_controlled_duty() <void pwm_apply_phase_controlled_duty (void) at ./ecolumiere/pwmcontroller.c:442>:
+                    pwm_apply_current_sequence() <void pwm_apply_current_sequence (void) at ./ecolumiere/pwmcontroller.c:123>:
+                        ledc_set_duty()
+                        ledc_update_duty()
+                        ESP_LOGD()
+                    ESP_LOGD()
+            esp_timer_create()
+            ESP_LOGE()
+            esp_err_to_name()
+        zero_cross_enable() <void zero_cross_enable (void) at ./ecolumiere/zerocross.c:89>:
+            gpio_intr_enable()
+            ESP_LOGI()
+        zero_cross_disable() <void zero_cross_disable (void) at ./ecolumiere/zerocross.c:94>:
+            gpio_intr_disable()
+            ESP_LOGI()
+        pwmcontroller_init() <esp_err_t pwmcontroller_init (void) at ./ecolumiere/pwmcontroller.c:301>:
+            ESP_LOGI()
+            ledc_timer_config()
+            ESP_LOGE()
+            esp_err_to_name()
+            ledc_channel_config()
+            memset()
+            xTimerCreate()
+            pdMS_TO_TICKS()
+            slot_timer_callback() <void slot_timer_callback (TimerHandle_t timer) at ./ecolumiere/pwmcontroller.c:219>:
+                pwm_advance_slot() <void pwm_advance_slot (void) at ./ecolumiere/pwmcontroller.c:494>:
+                pwm_get_current_slot() <uint8_t pwm_get_current_slot (void) at ./ecolumiere/pwmcontroller.c:487>:
+                apply_fade() <void apply_fade (void) at ./ecolumiere/pwmcontroller.c:206>:
+                handle_device_id_slot() <void handle_device_id_slot (void) at ./ecolumiere/pwmcontroller.c:148>:
+                    light_code_pickup() <void light_code_pickup (void) at ./ecolumiere/lightcode.c:72>:
+                        memcpy()
+                    light_code_check() <uint8_t light_code_check (void) at ./ecolumiere/lightcode.c:106>:
+                    ecolumiere_update_lux() <void ecolumiere_update_lux (void *p_event_data, uint16_t event_size) at ./ecolumiere/ecolumiere.c:417>:
+                        ecolumiere_algo_process() <void ecolumiere_algo_process (void) at ./ecolumiere/ecolumiere.c:261>:
+                            esp_timer_get_time()
+                            ESP_LOGI()
+                            ecolumiere_update_algo_data() <void ecolumiere_update_algo_data (void) at ./ecolumiere/ecolumiere.c:198>:
+                                ecolumiere_has_valid_config() <bool ecolumiere_has_valid_config (void) at ./ecolumiere/ecolumiere.c:495>:
+                                    esp_rom_crc16_le()
+                            ecolumiuere_avg_calulator() <void ecolumiuere_avg_calulator (algo_avg_t *algo_avg) at ./ecolumiere/ecolumiere.c:242>:
+                            ESP_LOGD()
+                            pwm_set_duty_cycle() <void pwm_set_duty_cycle (uint32_t duty_cycle) at ./ecolumiere/pwmcontroller.c:375>:
+                                ESP_LOGE()
+                                data_recorder_push_history_data() <void data_recorder_push_history_data (uint8_t value) at ./ecolumiere/datarecorder.c:170>:
+                                    ESP_LOGW()
+                                    esp_timer_get_time()
+                                    ESP_LOGD()
+                                slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                ESP_LOGI()
+                            ecolumiere_save_current_pwm() <void ecolumiere_save_current_pwm (uint16_t pwm_level) at ./ecolumiere/ecolumiere.c:631>:
+                                ecolumiere_save_algo_config() <void ecolumiere_save_algo_config (void) at ./ecolumiere/ecolumiere.c:184>:
+                                    esp_rom_crc16_le()
+                                    storage_save_config() <bool storage_save_config (void *config) at ./ecolumiere/storage.c:222>:
+                                        ESP_LOGD()
+                                        memcpy()
+                                        storage_write_config() <void storage_write_config (void) at ./ecolumiere/storage.c:122>:
+                                            ESP_LOGE()
+                                            generate_device_key() <void generate_device_key (const char *prefix, char *key_buffer, size_t buffer_size) at ./ecolumiere/storage.c:108>:
+                                                slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                                snprintf()
+                                                ESP_LOGD()
+                                            ESP_LOGD()
+                                            nvs_set_blob()
+                                            nvs_commit()
+                                            esp_err_to_name()
+                                            storage_fds_evt_handler() <void storage_fds_evt_handler (uint32_t event_type, uint32_t result) at ./ecolumiere/storage.c:61>:
+                                                ESP_LOGD()
+                                            ESP_LOGI()
+                                    ESP_LOGI()
+                                    slave_node_log_identity() <void slave_node_log_identity (void) at ./ecolumiere/slave_role.c:266>:
+                                        slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                        ESP_LOGI()
+                                        slave_node_get_mac_string() <const char *slave_node_get_mac_string (void) at ./ecolumiere/slave_role.c:251>:
+                                            slave_node_get_mac_address() <const uint8_t *slave_node_get_mac_address (void) at ./ecolumiere/slave_role.c:242>:
+                                            snprintf()
+                                ESP_LOGI()
+                    ESP_LOGD()
+                handle_natural_light_slot() <void handle_natural_light_slot (void) at ./ecolumiere/pwmcontroller.c:166>:
+                    luxmeter_pickup() <void luxmeter_pickup (luxmeter_measure_t measure, uint16_t pwm_level, uint32_t *lux, uint32_t *index) at ./ecolumiere/luxmeter.c:193>:
+                        pow()
+                        ESP_LOGD()
+                    ecolumiere_update_lux() <void ecolumiere_update_lux (void *p_event_data, uint16_t event_size) at ./ecolumiere/ecolumiere.c:417>:
+                        ecolumiere_algo_process() <void ecolumiere_algo_process (void) at ./ecolumiere/ecolumiere.c:261>:
+                            esp_timer_get_time()
+                            ESP_LOGI()
+                            ecolumiere_update_algo_data() <void ecolumiere_update_algo_data (void) at ./ecolumiere/ecolumiere.c:198>:
+                                ecolumiere_has_valid_config() <bool ecolumiere_has_valid_config (void) at ./ecolumiere/ecolumiere.c:495>:
+                                    esp_rom_crc16_le()
+                            ecolumiuere_avg_calulator() <void ecolumiuere_avg_calulator (algo_avg_t *algo_avg) at ./ecolumiere/ecolumiere.c:242>:
+                            ESP_LOGD()
+                            pwm_set_duty_cycle() <void pwm_set_duty_cycle (uint32_t duty_cycle) at ./ecolumiere/pwmcontroller.c:375>:
+                                ESP_LOGE()
+                                data_recorder_push_history_data() <void data_recorder_push_history_data (uint8_t value) at ./ecolumiere/datarecorder.c:170>:
+                                    ESP_LOGW()
+                                    esp_timer_get_time()
+                                    ESP_LOGD()
+                                slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                ESP_LOGI()
+                            ecolumiere_save_current_pwm() <void ecolumiere_save_current_pwm (uint16_t pwm_level) at ./ecolumiere/ecolumiere.c:631>:
+                                ecolumiere_save_algo_config() <void ecolumiere_save_algo_config (void) at ./ecolumiere/ecolumiere.c:184>:
+                                    esp_rom_crc16_le()
+                                    storage_save_config() <bool storage_save_config (void *config) at ./ecolumiere/storage.c:222>:
+                                        ESP_LOGD()
+                                        memcpy()
+                                        storage_write_config() <void storage_write_config (void) at ./ecolumiere/storage.c:122>:
+                                            ESP_LOGE()
+                                            generate_device_key() <void generate_device_key (const char *prefix, char *key_buffer, size_t buffer_size) at ./ecolumiere/storage.c:108>:
+                                                slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                                snprintf()
+                                                ESP_LOGD()
+                                            ESP_LOGD()
+                                            nvs_set_blob()
+                                            nvs_commit()
+                                            esp_err_to_name()
+                                            storage_fds_evt_handler() <void storage_fds_evt_handler (uint32_t event_type, uint32_t result) at ./ecolumiere/storage.c:61>:
+                                                ESP_LOGD()
+                                            ESP_LOGI()
+                                    ESP_LOGI()
+                                    slave_node_log_identity() <void slave_node_log_identity (void) at ./ecolumiere/slave_role.c:266>:
+                                        slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                        ESP_LOGI()
+                                        slave_node_get_mac_string() <const char *slave_node_get_mac_string (void) at ./ecolumiere/slave_role.c:251>:
+                                            slave_node_get_mac_address() <const uint8_t *slave_node_get_mac_address (void) at ./ecolumiere/slave_role.c:242>:
+                                            snprintf()
+                                ESP_LOGI()
+                    ESP_LOGD()
+                handle_env_light_slot() <void handle_env_light_slot (void) at ./ecolumiere/pwmcontroller.c:185>:
+                    luxmeter_pickup() <void luxmeter_pickup (luxmeter_measure_t measure, uint16_t pwm_level, uint32_t *lux, uint32_t *index) at ./ecolumiere/luxmeter.c:193>:
+                        pow()
+                        ESP_LOGD()
+                    ecolumiere_update_lux() <void ecolumiere_update_lux (void *p_event_data, uint16_t event_size) at ./ecolumiere/ecolumiere.c:417>:
+                        ecolumiere_algo_process() <void ecolumiere_algo_process (void) at ./ecolumiere/ecolumiere.c:261>:
+                            esp_timer_get_time()
+                            ESP_LOGI()
+                            ecolumiere_update_algo_data() <void ecolumiere_update_algo_data (void) at ./ecolumiere/ecolumiere.c:198>:
+                                ecolumiere_has_valid_config() <bool ecolumiere_has_valid_config (void) at ./ecolumiere/ecolumiere.c:495>:
+                                    esp_rom_crc16_le()
+                            ecolumiuere_avg_calulator() <void ecolumiuere_avg_calulator (algo_avg_t *algo_avg) at ./ecolumiere/ecolumiere.c:242>:
+                            ESP_LOGD()
+                            pwm_set_duty_cycle() <void pwm_set_duty_cycle (uint32_t duty_cycle) at ./ecolumiere/pwmcontroller.c:375>:
+                                ESP_LOGE()
+                                data_recorder_push_history_data() <void data_recorder_push_history_data (uint8_t value) at ./ecolumiere/datarecorder.c:170>:
+                                    ESP_LOGW()
+                                    esp_timer_get_time()
+                                    ESP_LOGD()
+                                slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                ESP_LOGI()
+                            ecolumiere_save_current_pwm() <void ecolumiere_save_current_pwm (uint16_t pwm_level) at ./ecolumiere/ecolumiere.c:631>:
+                                ecolumiere_save_algo_config() <void ecolumiere_save_algo_config (void) at ./ecolumiere/ecolumiere.c:184>:
+                                    esp_rom_crc16_le()
+                                    storage_save_config() <bool storage_save_config (void *config) at ./ecolumiere/storage.c:222>:
+                                        ESP_LOGD()
+                                        memcpy()
+                                        storage_write_config() <void storage_write_config (void) at ./ecolumiere/storage.c:122>:
+                                            ESP_LOGE()
+                                            generate_device_key() <void generate_device_key (const char *prefix, char *key_buffer, size_t buffer_size) at ./ecolumiere/storage.c:108>:
+                                                slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                                snprintf()
+                                                ESP_LOGD()
+                                            ESP_LOGD()
+                                            nvs_set_blob()
+                                            nvs_commit()
+                                            esp_err_to_name()
+                                            storage_fds_evt_handler() <void storage_fds_evt_handler (uint32_t event_type, uint32_t result) at ./ecolumiere/storage.c:61>:
+                                                ESP_LOGD()
+                                            ESP_LOGI()
+                                    ESP_LOGI()
+                                    slave_node_log_identity() <void slave_node_log_identity (void) at ./ecolumiere/slave_role.c:266>:
+                                        slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                        ESP_LOGI()
+                                        slave_node_get_mac_string() <const char *slave_node_get_mac_string (void) at ./ecolumiere/slave_role.c:251>:
+                                            slave_node_get_mac_address() <const uint8_t *slave_node_get_mac_address (void) at ./ecolumiere/slave_role.c:242>:
+                                            snprintf()
+                                ESP_LOGI()
+                    ecolumiere_algo_process() <void ecolumiere_algo_process (void) at ./ecolumiere/ecolumiere.c:261>:
+                        esp_timer_get_time()
+                        ESP_LOGI()
+                        ecolumiere_update_algo_data() <void ecolumiere_update_algo_data (void) at ./ecolumiere/ecolumiere.c:198>:
+                            ecolumiere_has_valid_config() <bool ecolumiere_has_valid_config (void) at ./ecolumiere/ecolumiere.c:495>:
+                                esp_rom_crc16_le()
+                        ecolumiuere_avg_calulator() <void ecolumiuere_avg_calulator (algo_avg_t *algo_avg) at ./ecolumiere/ecolumiere.c:242>:
+                        ESP_LOGD()
+                        pwm_set_duty_cycle() <void pwm_set_duty_cycle (uint32_t duty_cycle) at ./ecolumiere/pwmcontroller.c:375>:
+                            ESP_LOGE()
+                            data_recorder_push_history_data() <void data_recorder_push_history_data (uint8_t value) at ./ecolumiere/datarecorder.c:170>:
+                                ESP_LOGW()
+                                esp_timer_get_time()
+                                ESP_LOGD()
+                            slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                            ESP_LOGI()
+                        ecolumiere_save_current_pwm() <void ecolumiere_save_current_pwm (uint16_t pwm_level) at ./ecolumiere/ecolumiere.c:631>:
+                            ecolumiere_save_algo_config() <void ecolumiere_save_algo_config (void) at ./ecolumiere/ecolumiere.c:184>:
+                                esp_rom_crc16_le()
+                                storage_save_config() <bool storage_save_config (void *config) at ./ecolumiere/storage.c:222>:
+                                    ESP_LOGD()
+                                    memcpy()
+                                    storage_write_config() <void storage_write_config (void) at ./ecolumiere/storage.c:122>:
+                                        ESP_LOGE()
+                                        generate_device_key() <void generate_device_key (const char *prefix, char *key_buffer, size_t buffer_size) at ./ecolumiere/storage.c:108>:
+                                            slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                            snprintf()
+                                            ESP_LOGD()
+                                        ESP_LOGD()
+                                        nvs_set_blob()
+                                        nvs_commit()
+                                        esp_err_to_name()
+                                        storage_fds_evt_handler() <void storage_fds_evt_handler (uint32_t event_type, uint32_t result) at ./ecolumiere/storage.c:61>:
+                                            ESP_LOGD()
+                                        ESP_LOGI()
+                                ESP_LOGI()
+                                slave_node_log_identity() <void slave_node_log_identity (void) at ./ecolumiere/slave_role.c:266>:
+                                    slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                    ESP_LOGI()
+                                    slave_node_get_mac_string() <const char *slave_node_get_mac_string (void) at ./ecolumiere/slave_role.c:251>:
+                                        slave_node_get_mac_address() <const uint8_t *slave_node_get_mac_address (void) at ./ecolumiere/slave_role.c:242>:
+                                        snprintf()
+                            ESP_LOGI()
+                    ESP_LOGD()
+                pwm_sequence_update() <void pwm_sequence_update (uint8_t event) at ./ecolumiere/pwmcontroller.c:100>:
+                pwm_apply_current_sequence() <void pwm_apply_current_sequence (void) at ./ecolumiere/pwmcontroller.c:123>:
+                    ledc_set_duty()
+                    ledc_update_duty()
+                    ESP_LOGD()
+                ESP_LOGD()
+            xTimerStart()
+            slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+        slave_node_load_saved_state() <void slave_node_load_saved_state (void) at ./ecolumiere/slave_role.c:404>:
+            ESP_LOGI()
+            storage_lampada_state_exists() <bool storage_lampada_state_exists (void) at ./ecolumiere/storage.c:487>:
+                generate_lampada_key() <void generate_lampada_key (char *key_buffer, size_t buffer_size) at ./ecolumiere/storage.c:422>:
+                    slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                    snprintf()
+                storage_key_exists() <bool storage_key_exists (const char *key_name) at ./ecolumiere/storage.c:99>:
+                    nvs_get_blob()
+                ESP_LOGI()
+            storage_load_lampada_state() <bool storage_load_lampada_state (NodoLampada *lampada) at ./ecolumiere/storage.c:450>:
+                ESP_LOGE()
+                generate_lampada_key() <void generate_lampada_key (char *key_buffer, size_t buffer_size) at ./ecolumiere/storage.c:422>:
+                    slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                    snprintf()
+                ESP_LOGI()
+                storage_key_exists() <bool storage_key_exists (const char *key_name) at ./ecolumiere/storage.c:99>:
+                    nvs_get_blob()
+                nvs_get_blob()
+                esp_err_to_name()
+                ESP_LOGW()
+            apply_saved_state_to_system() <void apply_saved_state_to_system (void) at ./ecolumiere/slave_role.c:358>:
+                is_pwm_initialized() <bool is_pwm_initialized (void) at ./ecolumiere/pwmcontroller.c:517>:
+                ESP_LOGW()
+                ESP_LOGI()
+                board_led_operation() <void board_led_operation (uint8_t pin, uint8_t onoff) at ./main/board.c:24>:
+                    ESP_LOGE()
+                pwmcontroller_set_level() <void pwmcontroller_set_level (uint8_t level) at ./ecolumiere/pwmcontroller.c:471>:
+                    ESP_LOGI()
+                    pwm_set_duty_cycle() <void pwm_set_duty_cycle (uint32_t duty_cycle) at ./ecolumiere/pwmcontroller.c:375>:
+                        ESP_LOGE()
+                        data_recorder_push_history_data() <void data_recorder_push_history_data (uint8_t value) at ./ecolumiere/datarecorder.c:170>:
+                            ESP_LOGW()
+                            esp_timer_get_time()
+                            ESP_LOGD()
+                        slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                        ESP_LOGI()
+                    save_pwm_level_to_config() <void save_pwm_level_to_config (uint8_t level) at ./ecolumiere/pwmcontroller.c:459>:
+                        ecolumiere_save_current_pwm() <void ecolumiere_save_current_pwm (uint16_t pwm_level) at ./ecolumiere/ecolumiere.c:631>:
+                            ecolumiere_save_algo_config() <void ecolumiere_save_algo_config (void) at ./ecolumiere/ecolumiere.c:184>:
+                                esp_rom_crc16_le()
+                                storage_save_config() <bool storage_save_config (void *config) at ./ecolumiere/storage.c:222>:
+                                    ESP_LOGD()
+                                    memcpy()
+                                    storage_write_config() <void storage_write_config (void) at ./ecolumiere/storage.c:122>:
+                                        ESP_LOGE()
+                                        generate_device_key() <void generate_device_key (const char *prefix, char *key_buffer, size_t buffer_size) at ./ecolumiere/storage.c:108>:
+                                            slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                            snprintf()
+                                            ESP_LOGD()
+                                        ESP_LOGD()
+                                        nvs_set_blob()
+                                        nvs_commit()
+                                        esp_err_to_name()
+                                        storage_fds_evt_handler() <void storage_fds_evt_handler (uint32_t event_type, uint32_t result) at ./ecolumiere/storage.c:61>:
+                                            ESP_LOGD()
+                                        ESP_LOGI()
+                                ESP_LOGI()
+                                slave_node_log_identity() <void slave_node_log_identity (void) at ./ecolumiere/slave_role.c:266>:
+                                    slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                    ESP_LOGI()
+                                    slave_node_get_mac_string() <const char *slave_node_get_mac_string (void) at ./ecolumiere/slave_role.c:251>:
+                                        slave_node_get_mac_address() <const uint8_t *slave_node_get_mac_address (void) at ./ecolumiere/slave_role.c:242>:
+                                        snprintf()
+                            ESP_LOGI()
+                        ESP_LOGI()
+                    slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+            ESP_LOGW()
+        luxmeter_init() <void luxmeter_init (void) at ./ecolumiere/luxmeter.c:179>:
+            ESP_LOGI()
+            luxmeter_adc_init() <void luxmeter_adc_init (void) at ./ecolumiere/luxmeter.c:117>:
+                ESP_LOGI()
+                adc_oneshot_new_unit()
+                ESP_LOGE()
+                esp_err_to_name()
+                adc_oneshot_config_channel()
+            luxmeter_sampling_timer_init() <void luxmeter_sampling_timer_init (void) at ./ecolumiere/luxmeter.c:154>:
+                xTimerCreate()
+                pdMS_TO_TICKS()
+                luxmeter_timer_callback() <void luxmeter_timer_callback (TimerHandle_t xTimer) at ./ecolumiere/luxmeter.c:94>:
+                    adc_oneshot_read()
+                    luxmeter_process_adc_buffer() <void luxmeter_process_adc_buffer (void) at ./ecolumiere/luxmeter.c:66>:
+                        ESP_LOGD()
+                ESP_LOGE()
+                ESP_LOGD()
+        ecolumiere_init() <void ecolumiere_init (void) at ./ecolumiere/ecolumiere.c:719>:
+            ESP_LOGI()
+            initialize_algorithm_structures() <void initialize_algorithm_structures (void) at ./ecolumiere/ecolumiere.c:541>:
+                memset()
+            handle_device_identity() <void handle_device_identity (void) at ./ecolumiere/ecolumiere.c:579>:
+                ESP_LOGI()
+                storage_load_registry() <void storage_load_registry (void *registry) at ./ecolumiere/storage.c:313>:
+                    generate_device_key() <void generate_device_key (const char *prefix, char *key_buffer, size_t buffer_size) at ./ecolumiere/storage.c:108>:
+                        slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                        snprintf()
+                        ESP_LOGD()
+                    ESP_LOGI()
+                    storage_key_exists() <bool storage_key_exists (const char *key_name) at ./ecolumiere/storage.c:99>:
+                        nvs_get_blob()
+                    nvs_get_blob()
+                    esp_err_to_name()
+                    ESP_LOGE()
+                    memset()
+                slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                ESP_LOGW()
+                create_new_registry() <void create_new_registry (const slave_identity_t *identity) at ./ecolumiere/ecolumiere.c:556>:
+                    strncpy()
+                    memcpy()
+                    storage_save_registry() <bool storage_save_registry (void *registry) at ./ecolumiere/storage.c:294>:
+                        ESP_LOGD()
+                        memcpy()
+                        storage_write_registry() <void storage_write_registry (void) at ./ecolumiere/storage.c:154>:
+                            ESP_LOGE()
+                            generate_device_key() <void generate_device_key (const char *prefix, char *key_buffer, size_t buffer_size) at ./ecolumiere/storage.c:108>:
+                                slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                snprintf()
+                                ESP_LOGD()
+                            ESP_LOGD()
+                            nvs_set_blob()
+                            nvs_commit()
+                            esp_err_to_name()
+                            storage_fds_evt_handler() <void storage_fds_evt_handler (uint32_t event_type, uint32_t result) at ./ecolumiere/storage.c:61>:
+                                ESP_LOGD()
+                            ESP_LOGI()
+                    ESP_LOGI()
+                    ESP_LOGE()
+            handle_device_configuration() <void handle_device_configuration (void) at ./ecolumiere/ecolumiere.c:650>:
+                ESP_LOGI()
+                storage_load_config() <bool storage_load_config (void *config) at ./ecolumiere/storage.c:240>:
+                    generate_device_key() <void generate_device_key (const char *prefix, char *key_buffer, size_t buffer_size) at ./ecolumiere/storage.c:108>:
+                        slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                        snprintf()
+                        ESP_LOGD()
+                    ESP_LOGI()
+                    storage_key_exists() <bool storage_key_exists (const char *key_name) at ./ecolumiere/storage.c:99>:
+                        nvs_get_blob()
+                    nvs_get_blob()
+                    ESP_LOGW()
+                    nvs_erase_key()
+                    nvs_commit()
+                    memset()
+                    esp_err_to_name()
+                    ESP_LOGE()
+                ESP_LOGW()
+                create_default_configuration() <void create_default_configuration (void) at ./ecolumiere/ecolumiere.c:603>:
+                    memset()
+                    esp_rom_crc16_le()
+                    ecolumiere_save_algo_config() <void ecolumiere_save_algo_config (void) at ./ecolumiere/ecolumiere.c:184>:
+                        esp_rom_crc16_le()
+                        storage_save_config() <bool storage_save_config (void *config) at ./ecolumiere/storage.c:222>:
+                            ESP_LOGD()
+                            memcpy()
+                            storage_write_config() <void storage_write_config (void) at ./ecolumiere/storage.c:122>:
+                                ESP_LOGE()
+                                generate_device_key() <void generate_device_key (const char *prefix, char *key_buffer, size_t buffer_size) at ./ecolumiere/storage.c:108>:
+                                    slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                    snprintf()
+                                    ESP_LOGD()
+                                ESP_LOGD()
+                                nvs_set_blob()
+                                nvs_commit()
+                                esp_err_to_name()
+                                storage_fds_evt_handler() <void storage_fds_evt_handler (uint32_t event_type, uint32_t result) at ./ecolumiere/storage.c:61>:
+                                    ESP_LOGD()
+                                ESP_LOGI()
+                        ESP_LOGI()
+                        slave_node_log_identity() <void slave_node_log_identity (void) at ./ecolumiere/slave_role.c:266>:
+                            slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                            ESP_LOGI()
+                            slave_node_get_mac_string() <const char *slave_node_get_mac_string (void) at ./ecolumiere/slave_role.c:251>:
+                                slave_node_get_mac_address() <const uint8_t *slave_node_get_mac_address (void) at ./ecolumiere/slave_role.c:242>:
+                                snprintf()
+                    ESP_LOGI()
+                pwm_set_duty_cycle() <void pwm_set_duty_cycle (uint32_t duty_cycle) at ./ecolumiere/pwmcontroller.c:375>:
+                    ESP_LOGE()
+                    data_recorder_push_history_data() <void data_recorder_push_history_data (uint8_t value) at ./ecolumiere/datarecorder.c:170>:
+                        ESP_LOGW()
+                        esp_timer_get_time()
+                        ESP_LOGD()
+                    slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                    ESP_LOGI()
+                ecolumiere_update_algo_data() <void ecolumiere_update_algo_data (void) at ./ecolumiere/ecolumiere.c:198>:
+                    ecolumiere_has_valid_config() <bool ecolumiere_has_valid_config (void) at ./ecolumiere/ecolumiere.c:495>:
+                        esp_rom_crc16_le()
+            initialize_system_components() <void initialize_system_components (void) at ./ecolumiere/ecolumiere.c:676>:
+                xQueueCreate()
+                ESP_LOGE()
+                ESP_LOGI()
+                calculate_initial_pwm() <float calculate_initial_pwm (void) at ./ecolumiere/ecolumiere.c:779>:
+                    ESP_LOGI()
+                pwm_set_duty_cycle() <void pwm_set_duty_cycle (uint32_t duty_cycle) at ./ecolumiere/pwmcontroller.c:375>:
+                    ESP_LOGE()
+                    data_recorder_push_history_data() <void data_recorder_push_history_data (uint8_t value) at ./ecolumiere/datarecorder.c:170>:
+                        ESP_LOGW()
+                        esp_timer_get_time()
+                        ESP_LOGD()
+                    slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                    ESP_LOGI()
+                ecolumiere_save_current_pwm() <void ecolumiere_save_current_pwm (uint16_t pwm_level) at ./ecolumiere/ecolumiere.c:631>:
+                    ecolumiere_save_algo_config() <void ecolumiere_save_algo_config (void) at ./ecolumiere/ecolumiere.c:184>:
+                        esp_rom_crc16_le()
+                        storage_save_config() <bool storage_save_config (void *config) at ./ecolumiere/storage.c:222>:
+                            ESP_LOGD()
+                            memcpy()
+                            storage_write_config() <void storage_write_config (void) at ./ecolumiere/storage.c:122>:
+                                ESP_LOGE()
+                                generate_device_key() <void generate_device_key (const char *prefix, char *key_buffer, size_t buffer_size) at ./ecolumiere/storage.c:108>:
+                                    slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                    snprintf()
+                                    ESP_LOGD()
+                                ESP_LOGD()
+                                nvs_set_blob()
+                                nvs_commit()
+                                esp_err_to_name()
+                                storage_fds_evt_handler() <void storage_fds_evt_handler (uint32_t event_type, uint32_t result) at ./ecolumiere/storage.c:61>:
+                                    ESP_LOGD()
+                                ESP_LOGI()
+                        ESP_LOGI()
+                        slave_node_log_identity() <void slave_node_log_identity (void) at ./ecolumiere/slave_role.c:266>:
+                            slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                            ESP_LOGI()
+                            slave_node_get_mac_string() <const char *slave_node_get_mac_string (void) at ./ecolumiere/slave_role.c:251>:
+                                slave_node_get_mac_address() <const uint8_t *slave_node_get_mac_address (void) at ./ecolumiere/slave_role.c:242>:
+                                snprintf()
+                    ESP_LOGI()
+                xTaskCreate()
+                ecolumiere_scheduler_task() <void ecolumiere_scheduler_task (void *pvParameters) at ./ecolumiere/ecolumiere.c:741>:
+                    ESP_LOGI()
+                    ESP_LOGE()
+                    vTaskDelay()
+                    pdMS_TO_TICKS()
+                    xQueueReceive()
+                    ESP_LOGD()
+                    ecolumiere_app_sched_event_handler() <void ecolumiere_app_sched_event_handler (void *p_event_data) at ./ecolumiere/ecolumiere.c:158>:
+                        ESP_LOGW()
+                    ESP_LOGW()
+                    vTaskDelete()
+                vQueueDelete()
+                ecolumiere_follow_up_timeout_timer_callback() <void ecolumiere_follow_up_timeout_timer_callback (void *p_context) at ./ecolumiere/ecolumiere.c:178>:
+                    pwm_set_duty_cycle() <void pwm_set_duty_cycle (uint32_t duty_cycle) at ./ecolumiere/pwmcontroller.c:375>:
+                        ESP_LOGE()
+                        data_recorder_push_history_data() <void data_recorder_push_history_data (uint8_t value) at ./ecolumiere/datarecorder.c:170>:
+                            ESP_LOGW()
+                            esp_timer_get_time()
+                            ESP_LOGD()
+                        slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                        ESP_LOGI()
+                esp_timer_create()
+            slave_node_log_identity() <void slave_node_log_identity (void) at ./ecolumiere/slave_role.c:266>:
+                slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                ESP_LOGI()
+                slave_node_get_mac_string() <const char *slave_node_get_mac_string (void) at ./ecolumiere/slave_role.c:251>:
+                    slave_node_get_mac_address() <const uint8_t *slave_node_get_mac_address (void) at ./ecolumiere/slave_role.c:242>:
+                    snprintf()
+    ble_mesh_ecolumiere_get_dev_uuid() <void ble_mesh_ecolumiere_get_dev_uuid (uint8_t *uuid) at ./ble_mesh_ecolumiere/ble_mesh_ecolumiere.c:859>:
+        memcpy()
+    ble_mesh_ecolumiere_init() <esp_err_t ble_mesh_ecolumiere_init (void) at ./ble_mesh_ecolumiere/ble_mesh_ecolumiere.c:807>:
+        ble_mesh_queue_init() <bool ble_mesh_queue_init (ble_mesh_queue_t *queue, uint32_t capacity) at ./ble_mesh_ecolumiere/coda_ble_mesh.c:13>:
+            ESP_LOGE()
+            calloc()
+            xSemaphoreCreateMutex()
+            free()
+            ESP_LOGI()
+        ESP_LOGE()
+        ble_mesh_message_processor_start() <esp_err_t ble_mesh_message_processor_start (void) at ./ble_mesh_ecolumiere/ble_mesh_ecolumiere.c:1037>:
+            xTaskCreate()
+            ble_mesh_message_processor_task() <void ble_mesh_message_processor_task (void *pvParameters) at ./ble_mesh_ecolumiere/ble_mesh_ecolumiere.c:931>:
+                ESP_LOGI()
+                ble_mesh_queue_pop() <bool ble_mesh_queue_pop (ble_mesh_queue_t *queue, ble_mesh_message_t *message) at ./ble_mesh_ecolumiere/coda_ble_mesh.c:72>:
+                    xSemaphoreTake()
+                    pdMS_TO_TICKS()
+                    xSemaphoreGive()
+                    memcpy()
+                ble_mesh_handle_queued_message() <void ble_mesh_handle_queued_message (const ble_mesh_message_t *message) at ./ble_mesh_ecolumiere/ble_mesh_ecolumiere.c:961>:
+                    ESP_LOGI()
+                    convert_lightness_to_pwm() <uint8_t convert_lightness_to_pwm (uint16_t lightness) at ./ble_mesh_ecolumiere/ble_mesh_ecolumiere.c:673>:
+                        ESP_LOGI()
+                        ESP_LOGW()
+                        ESP_LOGE()
+                    ecolumiere_handle_mesh_command() <void ecolumiere_handle_mesh_command (uint8_t level, bool is_override) at ./ecolumiere/ecolumiere.c:801>:
+                        ESP_LOGI()
+                        esp_timer_get_time()
+                        pwmcontroller_get_current_level() <uint16_t pwmcontroller_get_current_level (void) at ./ecolumiere/pwmcontroller.c:435>:
+                        memcpy()
+                        slave_node_get_lampada_data() <const NodoLampada *slave_node_get_lampada_data (void) at ./ecolumiere/slave_role.c:444>:
+                        slave_node_update_lampada_data() <void slave_node_update_lampada_data (const NodoLampada *new_data) at ./ecolumiere/slave_role.c:422>:
+                            convert_intensity_to_pwm() <uint8_t convert_intensity_to_pwm (uint16_t intensity) at ./ecolumiere/pwmcontroller.c:524>:
+                            memcpy()
+                            pwmcontroller_set_level() <void pwmcontroller_set_level (uint8_t level) at ./ecolumiere/pwmcontroller.c:471>:
+                                ESP_LOGI()
+                                pwm_set_duty_cycle() <void pwm_set_duty_cycle (uint32_t duty_cycle) at ./ecolumiere/pwmcontroller.c:375>:
+                                    ESP_LOGE()
+                                    data_recorder_push_history_data() <void data_recorder_push_history_data (uint8_t value) at ./ecolumiere/datarecorder.c:170>:
+                                        ESP_LOGW()
+                                        esp_timer_get_time()
+                                        ESP_LOGD()
+                                    slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                    ESP_LOGI()
+                                save_pwm_level_to_config() <void save_pwm_level_to_config (uint8_t level) at ./ecolumiere/pwmcontroller.c:459>:
+                                    ecolumiere_save_current_pwm() <void ecolumiere_save_current_pwm (uint16_t pwm_level) at ./ecolumiere/ecolumiere.c:631>:
+                                        ecolumiere_save_algo_config() <void ecolumiere_save_algo_config (void) at ./ecolumiere/ecolumiere.c:184>:
+                                            esp_rom_crc16_le()
+                                            storage_save_config() <bool storage_save_config (void *config) at ./ecolumiere/storage.c:222>:
+                                                ESP_LOGD()
+                                                memcpy()
+                                                storage_write_config() <void storage_write_config (void) at ./ecolumiere/storage.c:122>:
+                                                    ESP_LOGE()
+                                                    generate_device_key() <void generate_device_key (const char *prefix, char *key_buffer, size_t buffer_size) at ./ecolumiere/storage.c:108>:
+                                                        slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                                        snprintf()
+                                                        ESP_LOGD()
+                                                    ESP_LOGD()
+                                                    nvs_set_blob()
+                                                    nvs_commit()
+                                                    esp_err_to_name()
+                                                    storage_fds_evt_handler() <void storage_fds_evt_handler (uint32_t event_type, uint32_t result) at ./ecolumiere/storage.c:61>:
+                                                        ESP_LOGD()
+                                                    ESP_LOGI()
+                                            ESP_LOGI()
+                                            slave_node_log_identity() <void slave_node_log_identity (void) at ./ecolumiere/slave_role.c:266>:
+                                                slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                                ESP_LOGI()
+                                                slave_node_get_mac_string() <const char *slave_node_get_mac_string (void) at ./ecolumiere/slave_role.c:251>:
+                                                    slave_node_get_mac_address() <const uint8_t *slave_node_get_mac_address (void) at ./ecolumiere/slave_role.c:242>:
+                                                    snprintf()
+                                        ESP_LOGI()
+                                    ESP_LOGI()
+                                slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                            storage_save_lampada_state() <bool storage_save_lampada_state (const NodoLampada *lampada) at ./ecolumiere/storage.c:443>:
+                                storage_is_ready_for_write() <bool storage_is_ready_for_write (void) at ./ecolumiere/storage.c:382>:
+                                storage_write_lampada_state() <void storage_write_lampada_state (const NodoLampada *lampada) at ./ecolumiere/storage.c:429>:
+                                    generate_lampada_key() <void generate_lampada_key (char *key_buffer, size_t buffer_size) at ./ecolumiere/storage.c:422>:
+                                        slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                        snprintf()
+                                    nvs_set_blob()
+                                    nvs_commit()
+                                    ESP_LOGI()
+                            ESP_LOGD()
+                            ESP_LOGI()
+                        pwmcontroller_set_level() <void pwmcontroller_set_level (uint8_t level) at ./ecolumiere/pwmcontroller.c:471>:
+                            ESP_LOGI()
+                            pwm_set_duty_cycle() <void pwm_set_duty_cycle (uint32_t duty_cycle) at ./ecolumiere/pwmcontroller.c:375>:
+                                ESP_LOGE()
+                                data_recorder_push_history_data() <void data_recorder_push_history_data (uint8_t value) at ./ecolumiere/datarecorder.c:170>:
+                                    ESP_LOGW()
+                                    esp_timer_get_time()
+                                    ESP_LOGD()
+                                slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                ESP_LOGI()
+                            save_pwm_level_to_config() <void save_pwm_level_to_config (uint8_t level) at ./ecolumiere/pwmcontroller.c:459>:
+                                ecolumiere_save_current_pwm() <void ecolumiere_save_current_pwm (uint16_t pwm_level) at ./ecolumiere/ecolumiere.c:631>:
+                                    ecolumiere_save_algo_config() <void ecolumiere_save_algo_config (void) at ./ecolumiere/ecolumiere.c:184>:
+                                        esp_rom_crc16_le()
+                                        storage_save_config() <bool storage_save_config (void *config) at ./ecolumiere/storage.c:222>:
+                                            ESP_LOGD()
+                                            memcpy()
+                                            storage_write_config() <void storage_write_config (void) at ./ecolumiere/storage.c:122>:
+                                                ESP_LOGE()
+                                                generate_device_key() <void generate_device_key (const char *prefix, char *key_buffer, size_t buffer_size) at ./ecolumiere/storage.c:108>:
+                                                    slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                                    snprintf()
+                                                    ESP_LOGD()
+                                                ESP_LOGD()
+                                                nvs_set_blob()
+                                                nvs_commit()
+                                                esp_err_to_name()
+                                                storage_fds_evt_handler() <void storage_fds_evt_handler (uint32_t event_type, uint32_t result) at ./ecolumiere/storage.c:61>:
+                                                    ESP_LOGD()
+                                                ESP_LOGI()
+                                        ESP_LOGI()
+                                        slave_node_log_identity() <void slave_node_log_identity (void) at ./ecolumiere/slave_role.c:266>:
+                                            slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                            ESP_LOGI()
+                                            slave_node_get_mac_string() <const char *slave_node_get_mac_string (void) at ./ecolumiere/slave_role.c:251>:
+                                                slave_node_get_mac_address() <const uint8_t *slave_node_get_mac_address (void) at ./ecolumiere/slave_role.c:242>:
+                                                snprintf()
+                                    ESP_LOGI()
+                                ESP_LOGI()
+                            slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                        ecolumiere_save_algo_config() <void ecolumiere_save_algo_config (void) at ./ecolumiere/ecolumiere.c:184>:
+                            esp_rom_crc16_le()
+                            storage_save_config() <bool storage_save_config (void *config) at ./ecolumiere/storage.c:222>:
+                                ESP_LOGD()
+                                memcpy()
+                                storage_write_config() <void storage_write_config (void) at ./ecolumiere/storage.c:122>:
+                                    ESP_LOGE()
+                                    generate_device_key() <void generate_device_key (const char *prefix, char *key_buffer, size_t buffer_size) at ./ecolumiere/storage.c:108>:
+                                        slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                        snprintf()
+                                        ESP_LOGD()
+                                    ESP_LOGD()
+                                    nvs_set_blob()
+                                    nvs_commit()
+                                    esp_err_to_name()
+                                    storage_fds_evt_handler() <void storage_fds_evt_handler (uint32_t event_type, uint32_t result) at ./ecolumiere/storage.c:61>:
+                                        ESP_LOGD()
+                                    ESP_LOGI()
+                            ESP_LOGI()
+                            slave_node_log_identity() <void slave_node_log_identity (void) at ./ecolumiere/slave_role.c:266>:
+                                slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                ESP_LOGI()
+                                slave_node_get_mac_string() <const char *slave_node_get_mac_string (void) at ./ecolumiere/slave_role.c:251>:
+                                    slave_node_get_mac_address() <const uint8_t *slave_node_get_mac_address (void) at ./ecolumiere/slave_role.c:242>:
+                                    snprintf()
+                        ecolumiere_algo_process() <void ecolumiere_algo_process (void) at ./ecolumiere/ecolumiere.c:261>:
+                            esp_timer_get_time()
+                            ESP_LOGI()
+                            ecolumiere_update_algo_data() <void ecolumiere_update_algo_data (void) at ./ecolumiere/ecolumiere.c:198>:
+                                ecolumiere_has_valid_config() <bool ecolumiere_has_valid_config (void) at ./ecolumiere/ecolumiere.c:495>:
+                                    esp_rom_crc16_le()
+                            ecolumiuere_avg_calulator() <void ecolumiuere_avg_calulator (algo_avg_t *algo_avg) at ./ecolumiere/ecolumiere.c:242>:
+                            ESP_LOGD()
+                            pwm_set_duty_cycle() <void pwm_set_duty_cycle (uint32_t duty_cycle) at ./ecolumiere/pwmcontroller.c:375>:
+                                ESP_LOGE()
+                                data_recorder_push_history_data() <void data_recorder_push_history_data (uint8_t value) at ./ecolumiere/datarecorder.c:170>:
+                                    ESP_LOGW()
+                                    esp_timer_get_time()
+                                    ESP_LOGD()
+                                slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                ESP_LOGI()
+                            ecolumiere_save_current_pwm() <void ecolumiere_save_current_pwm (uint16_t pwm_level) at ./ecolumiere/ecolumiere.c:631>:
+                                ecolumiere_save_algo_config() <void ecolumiere_save_algo_config (void) at ./ecolumiere/ecolumiere.c:184>:
+                                    esp_rom_crc16_le()
+                                    storage_save_config() <bool storage_save_config (void *config) at ./ecolumiere/storage.c:222>:
+                                        ESP_LOGD()
+                                        memcpy()
+                                        storage_write_config() <void storage_write_config (void) at ./ecolumiere/storage.c:122>:
+                                            ESP_LOGE()
+                                            generate_device_key() <void generate_device_key (const char *prefix, char *key_buffer, size_t buffer_size) at ./ecolumiere/storage.c:108>:
+                                                slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                                snprintf()
+                                                ESP_LOGD()
+                                            ESP_LOGD()
+                                            nvs_set_blob()
+                                            nvs_commit()
+                                            esp_err_to_name()
+                                            storage_fds_evt_handler() <void storage_fds_evt_handler (uint32_t event_type, uint32_t result) at ./ecolumiere/storage.c:61>:
+                                                ESP_LOGD()
+                                            ESP_LOGI()
+                                    ESP_LOGI()
+                                    slave_node_log_identity() <void slave_node_log_identity (void) at ./ecolumiere/slave_role.c:266>:
+                                        slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                        ESP_LOGI()
+                                        slave_node_get_mac_string() <const char *slave_node_get_mac_string (void) at ./ecolumiere/slave_role.c:251>:
+                                            slave_node_get_mac_address() <const uint8_t *slave_node_get_mac_address (void) at ./ecolumiere/slave_role.c:242>:
+                                            snprintf()
+                                ESP_LOGI()
+                    sync_nodo_lampada_with_hsl() <void sync_nodo_lampada_with_hsl (uint16_t hue, uint16_t saturation, uint16_t lightness) at ./ble_mesh_ecolumiere/ble_mesh_ecolumiere.c:871>:
+                        slave_node_get_lampada_data() <const NodoLampada *slave_node_get_lampada_data (void) at ./ecolumiere/slave_role.c:444>:
+                        memcpy()
+                        memset()
+                        ESP_LOGD()
+                        esp_timer_get_time()
+                        ESP_LOGI()
+                        slave_node_update_lampada_data() <void slave_node_update_lampada_data (const NodoLampada *new_data) at ./ecolumiere/slave_role.c:422>:
+                            convert_intensity_to_pwm() <uint8_t convert_intensity_to_pwm (uint16_t intensity) at ./ecolumiere/pwmcontroller.c:524>:
+                            memcpy()
+                            pwmcontroller_set_level() <void pwmcontroller_set_level (uint8_t level) at ./ecolumiere/pwmcontroller.c:471>:
+                                ESP_LOGI()
+                                pwm_set_duty_cycle() <void pwm_set_duty_cycle (uint32_t duty_cycle) at ./ecolumiere/pwmcontroller.c:375>:
+                                    ESP_LOGE()
+                                    data_recorder_push_history_data() <void data_recorder_push_history_data (uint8_t value) at ./ecolumiere/datarecorder.c:170>:
+                                        ESP_LOGW()
+                                        esp_timer_get_time()
+                                        ESP_LOGD()
+                                    slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                    ESP_LOGI()
+                                save_pwm_level_to_config() <void save_pwm_level_to_config (uint8_t level) at ./ecolumiere/pwmcontroller.c:459>:
+                                    ecolumiere_save_current_pwm() <void ecolumiere_save_current_pwm (uint16_t pwm_level) at ./ecolumiere/ecolumiere.c:631>:
+                                        ecolumiere_save_algo_config() <void ecolumiere_save_algo_config (void) at ./ecolumiere/ecolumiere.c:184>:
+                                            esp_rom_crc16_le()
+                                            storage_save_config() <bool storage_save_config (void *config) at ./ecolumiere/storage.c:222>:
+                                                ESP_LOGD()
+                                                memcpy()
+                                                storage_write_config() <void storage_write_config (void) at ./ecolumiere/storage.c:122>:
+                                                    ESP_LOGE()
+                                                    generate_device_key() <void generate_device_key (const char *prefix, char *key_buffer, size_t buffer_size) at ./ecolumiere/storage.c:108>:
+                                                        slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                                        snprintf()
+                                                        ESP_LOGD()
+                                                    ESP_LOGD()
+                                                    nvs_set_blob()
+                                                    nvs_commit()
+                                                    esp_err_to_name()
+                                                    storage_fds_evt_handler() <void storage_fds_evt_handler (uint32_t event_type, uint32_t result) at ./ecolumiere/storage.c:61>:
+                                                        ESP_LOGD()
+                                                    ESP_LOGI()
+                                            ESP_LOGI()
+                                            slave_node_log_identity() <void slave_node_log_identity (void) at ./ecolumiere/slave_role.c:266>:
+                                                slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                                ESP_LOGI()
+                                                slave_node_get_mac_string() <const char *slave_node_get_mac_string (void) at ./ecolumiere/slave_role.c:251>:
+                                                    slave_node_get_mac_address() <const uint8_t *slave_node_get_mac_address (void) at ./ecolumiere/slave_role.c:242>:
+                                                    snprintf()
+                                        ESP_LOGI()
+                                    ESP_LOGI()
+                                slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                            storage_save_lampada_state() <bool storage_save_lampada_state (const NodoLampada *lampada) at ./ecolumiere/storage.c:443>:
+                                storage_is_ready_for_write() <bool storage_is_ready_for_write (void) at ./ecolumiere/storage.c:382>:
+                                storage_write_lampada_state() <void storage_write_lampada_state (const NodoLampada *lampada) at ./ecolumiere/storage.c:429>:
+                                    generate_lampada_key() <void generate_lampada_key (char *key_buffer, size_t buffer_size) at ./ecolumiere/storage.c:422>:
+                                        slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                        snprintf()
+                                    nvs_set_blob()
+                                    nvs_commit()
+                                    ESP_LOGI()
+                            ESP_LOGD()
+                            ESP_LOGI()
+                        snprintf()
+                        data_recorder_enqueue_lampada_event() <bool data_recorder_enqueue_lampada_event (event_type_t event_type, const char *description) at ./ecolumiere/datarecorder.c:454>:
+                            data_recorder_enqueue() <bool data_recorder_enqueue (uint8_t value) at ./ecolumiere/datarecorder.c:142>:
+                                ESP_LOGW()
+                                esp_timer_get_time()
+                                ESP_LOGD()
+                            ESP_LOGD()
+                    board_led_operation() <void board_led_operation (uint8_t pin, uint8_t onoff) at ./main/board.c:24>:
+                        ESP_LOGE()
+                    ESP_LOGW()
+                vTaskDelay()
+                pdMS_TO_TICKS()
+            ESP_LOGE()
+            ESP_LOGI()
+        ble_mesh_queue_deinit() <void ble_mesh_queue_deinit (ble_mesh_queue_t *queue) at ./ble_mesh_ecolumiere/coda_ble_mesh.c:135>:
+            xSemaphoreTake()
+            pdMS_TO_TICKS()
+            free()
+            xSemaphoreGive()
+            vSemaphoreDelete()
+            ESP_LOGI()
+        esp_ble_mesh_register_prov_callback()
+        example_ble_mesh_provisioning_cb() <void example_ble_mesh_provisioning_cb (esp_ble_mesh_prov_cb_event_t event, esp_ble_mesh_prov_cb_param_t *param) at ./ble_mesh_ecolumiere/ble_mesh_ecolumiere.c:381>:
+            ESP_LOGI()
+            prov_complete() <void prov_complete (uint16_t net_idx, uint16_t addr, uint8_t flags, uint32_t iv_index) at ./ble_mesh_ecolumiere/ble_mesh_ecolumiere.c:362>:
+                ESP_LOGI()
+                board_led_operation() <void board_led_operation (uint8_t pin, uint8_t onoff) at ./main/board.c:24>:
+                    ESP_LOGE()
+                slave_node_on_provisioned() <void slave_node_on_provisioned (uint16_t assigned_addr) at ./ecolumiere/slave_role.c:203>:
+                    ESP_LOGI()
+                    slave_node_log_identity() <void slave_node_log_identity (void) at ./ecolumiere/slave_role.c:266>:
+                        slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                        ESP_LOGI()
+                        slave_node_get_mac_string() <const char *slave_node_get_mac_string (void) at ./ecolumiere/slave_role.c:251>:
+                            slave_node_get_mac_address() <const uint8_t *slave_node_get_mac_address (void) at ./ecolumiere/slave_role.c:242>:
+                            snprintf()
+                luxmeter_start_acquisition() <void luxmeter_start_acquisition (void) at ./ecolumiere/luxmeter.c:218>:
+                    xTimerIsTimerActive()
+                    xTimerStart()
+                    ESP_LOGI()
+                sensor_data_initialize() <void sensor_data_initialize (void) at ./ble_mesh_ecolumiere/ble_mesh_ecolumiere.c:331>:
+                    net_buf_simple_add_u8()
+                    net_buf_simple_add_le16()
+                    net_buf_simple_add_le32()
+                    pwmcontroller_get_current_level() <uint16_t pwmcontroller_get_current_level (void) at ./ecolumiere/pwmcontroller.c:435>:
+                    ESP_LOGI()
+        esp_ble_mesh_register_config_server_callback()
+        example_ble_mesh_config_server_cb() <void example_ble_mesh_config_server_cb (esp_ble_mesh_cfg_server_cb_event_t event, esp_ble_mesh_cfg_server_cb_param_t *param) at ./ble_mesh_ecolumiere/ble_mesh_ecolumiere.c:418>:
+            ESP_LOGI()
+            ESP_LOG_BUFFER_HEX()
+        esp_ble_mesh_register_sensor_server_callback()
+        example_ble_mesh_sensor_server_cb() <void example_ble_mesh_sensor_server_cb (esp_ble_mesh_sensor_server_cb_event_t event, esp_ble_mesh_sensor_server_cb_param_t *param) at ./ble_mesh_ecolumiere/ble_mesh_ecolumiere.c:646>:
+            ESP_LOGD()
+            ESP_LOGI()
+            example_ble_mesh_send_sensor_status() <void example_ble_mesh_send_sensor_status (esp_ble_mesh_sensor_server_cb_param_t *param) at ./ble_mesh_ecolumiere/ble_mesh_ecolumiere.c:570>:
+                ARRAY_SIZE()
+                calloc()
+                ESP_LOGE()
+                example_ble_mesh_get_sensor_data() <uint16_t example_ble_mesh_get_sensor_data (esp_ble_mesh_sensor_state_t *state, uint8_t *data) at ./ble_mesh_ecolumiere/ble_mesh_ecolumiere.c:534>:
+                    ESP_LOGE()
+                    ESP_BLE_MESH_SENSOR_DATA_FORMAT_B_MPID()
+                    ESP_BLE_MESH_SENSOR_DATA_FORMAT_A_MPID()
+                    memcpy()
+                ESP_BLE_MESH_SENSOR_DATA_FORMAT_B_MPID()
+                memcpy()
+                ESP_LOG_BUFFER_HEX()
+                esp_ble_mesh_server_model_send_msg()
+                free()
+            ESP_LOGE()
+        esp_ble_mesh_register_lighting_server_callback()
+        example_ble_mesh_light_server_cb() <void example_ble_mesh_light_server_cb (esp_ble_mesh_lighting_server_cb_event_t event, esp_ble_mesh_lighting_server_cb_param_t *param) at ./ble_mesh_ecolumiere/ble_mesh_ecolumiere.c:701>:
+            esp_timer_get_time()
+            ble_mesh_queue_push() <bool ble_mesh_queue_push (ble_mesh_queue_t *queue, const ble_mesh_message_t *message) at ./ble_mesh_ecolumiere/coda_ble_mesh.c:42>:
+                xSemaphoreTake()
+                pdMS_TO_TICKS()
+                ESP_LOGW()
+                xSemaphoreGive()
+                memcpy()
+                ESP_LOGD()
+                ESP_LOGE()
+            ESP_LOGI()
+            ESP_LOGE()
+            pwmcontroller_get_current_level() <uint16_t pwmcontroller_get_current_level (void) at ./ecolumiere/pwmcontroller.c:435>:
+            esp_ble_mesh_server_model_send_msg()
+        esp_ble_mesh_register_custom_model_callback()
+        example_ble_mesh_custom_model_cb() <void example_ble_mesh_custom_model_cb (esp_ble_mesh_model_cb_event_t event, esp_ble_mesh_model_cb_param_t *param) at ./ble_mesh_ecolumiere/ble_mesh_ecolumiere.c:453>:
+            ESP_LOGE()
+            ESP_LOGW()
+            esp_timer_get_time()
+            memcpy()
+            ble_mesh_queue_push() <bool ble_mesh_queue_push (ble_mesh_queue_t *queue, const ble_mesh_message_t *message) at ./ble_mesh_ecolumiere/coda_ble_mesh.c:42>:
+                xSemaphoreTake()
+                pdMS_TO_TICKS()
+                ESP_LOGW()
+                xSemaphoreGive()
+                memcpy()
+                ESP_LOGD()
+                ESP_LOGE()
+            ESP_LOGI()
+            esp_ble_mesh_server_model_send_msg()
+        esp_ble_mesh_init()
+        esp_ble_mesh_node_prov_enable()
+        board_led_operation() <void board_led_operation (uint8_t pin, uint8_t onoff) at ./main/board.c:24>:
+            ESP_LOGE()
+        ESP_LOGI()
+    xTaskCreate()
+    serial_control_task() <void serial_control_task (void *pvParameters) at ./main/main.c:27>:
+        ESP_LOGI()
+        uart_param_config()
+        uart_driver_install()
+        uart_read_bytes()
+        strchr()
+        strcmp()
+        board_led_operation() <void board_led_operation (uint8_t pin, uint8_t onoff) at ./main/board.c:24>:
+            ESP_LOGE()
+        ecolumiere_system_is_ready() <bool ecolumiere_system_is_ready (void) at ./ecolumiere/ecolumiere_system.c:300>:
+        ecolumiere_system_real_test() <void ecolumiere_system_real_test (void) at ./ecolumiere/ecolumiere_system.c:70>:
+            ESP_LOGI()
+            luxmeter_start_acquisition() <void luxmeter_start_acquisition (void) at ./ecolumiere/luxmeter.c:218>:
+                xTimerIsTimerActive()
+                xTimerStart()
+                ESP_LOGI()
+            vTaskDelay()
+            pdMS_TO_TICKS()
+            pwmcontroller_get_current_level() <uint16_t pwmcontroller_get_current_level (void) at ./ecolumiere/pwmcontroller.c:435>:
+            luxmeter_pickup() <void luxmeter_pickup (luxmeter_measure_t measure, uint16_t pwm_level, uint32_t *lux, uint32_t *index) at ./ecolumiere/luxmeter.c:193>:
+                pow()
+                ESP_LOGD()
+            luxmeter_stop_acquisition() <void luxmeter_stop_acquisition (void) at ./ecolumiere/luxmeter.c:232>:
+                xTimerIsTimerActive()
+                xTimerStop()
+                ESP_LOGI()
+            xTaskGetTickCount()
+            light_code_reset_queue() <void light_code_reset_queue (void) at ./ecolumiere/lightcode.c:58>:
+                memset()
+            light_code_pickup() <void light_code_pickup (void) at ./ecolumiere/lightcode.c:72>:
+                memcpy()
+            light_code_check() <uint8_t light_code_check (void) at ./ecolumiere/lightcode.c:106>:
+            storage_ready() <bool storage_ready (void) at ./ecolumiere/storage.c:374>:
+            ecolumiere_system_is_ready() <bool ecolumiere_system_is_ready (void) at ./ecolumiere/ecolumiere_system.c:300>:
+            ESP_LOGE()
+        ecolumiere_system_set_config() <void ecolumiere_system_set_config (system_config_t config) at ./ecolumiere/ecolumiere_system.c:307>:
+            ESP_LOGI()
+            print_system_configuration() <void print_system_configuration (void) at ./ecolumiere/ecolumiere_system.c:159>:
+                ESP_LOGI()
+        ecolumiere_show_algorithm_status() <void ecolumiere_show_algorithm_status (void) at ./ecolumiere/ecolumiere.c:919>:
+            ESP_LOGI()
+            ecolumiere_get_mesh_override_remaining() <uint32_t ecolumiere_get_mesh_override_remaining (void) at ./ecolumiere/ecolumiere.c:876>:
+                esp_timer_get_time()
+            ecolumiere_has_valid_config() <bool ecolumiere_has_valid_config (void) at ./ecolumiere/ecolumiere.c:495>:
+                esp_rom_crc16_le()
+        strncmp()
+        sscanf()
+        ecolumiere_test_algorithm() <void ecolumiere_test_algorithm (uint32_t natural_lux, uint32_t env_lux, uint32_t target_lux) at ./ecolumiere/ecolumiere.c:892>:
+            ESP_LOGI()
+            ecolumiere_algo_process() <void ecolumiere_algo_process (void) at ./ecolumiere/ecolumiere.c:261>:
+                esp_timer_get_time()
+                ESP_LOGI()
+                ecolumiere_update_algo_data() <void ecolumiere_update_algo_data (void) at ./ecolumiere/ecolumiere.c:198>:
+                    ecolumiere_has_valid_config() <bool ecolumiere_has_valid_config (void) at ./ecolumiere/ecolumiere.c:495>:
+                        esp_rom_crc16_le()
+                ecolumiuere_avg_calulator() <void ecolumiuere_avg_calulator (algo_avg_t *algo_avg) at ./ecolumiere/ecolumiere.c:242>:
+                ESP_LOGD()
+                pwm_set_duty_cycle() <void pwm_set_duty_cycle (uint32_t duty_cycle) at ./ecolumiere/pwmcontroller.c:375>:
+                    ESP_LOGE()
+                    data_recorder_push_history_data() <void data_recorder_push_history_data (uint8_t value) at ./ecolumiere/datarecorder.c:170>:
+                        ESP_LOGW()
+                        esp_timer_get_time()
+                        ESP_LOGD()
+                    slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                    ESP_LOGI()
+                ecolumiere_save_current_pwm() <void ecolumiere_save_current_pwm (uint16_t pwm_level) at ./ecolumiere/ecolumiere.c:631>:
+                    ecolumiere_save_algo_config() <void ecolumiere_save_algo_config (void) at ./ecolumiere/ecolumiere.c:184>:
+                        esp_rom_crc16_le()
+                        storage_save_config() <bool storage_save_config (void *config) at ./ecolumiere/storage.c:222>:
+                            ESP_LOGD()
+                            memcpy()
+                            storage_write_config() <void storage_write_config (void) at ./ecolumiere/storage.c:122>:
+                                ESP_LOGE()
+                                generate_device_key() <void generate_device_key (const char *prefix, char *key_buffer, size_t buffer_size) at ./ecolumiere/storage.c:108>:
+                                    slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                                    snprintf()
+                                    ESP_LOGD()
+                                ESP_LOGD()
+                                nvs_set_blob()
+                                nvs_commit()
+                                esp_err_to_name()
+                                storage_fds_evt_handler() <void storage_fds_evt_handler (uint32_t event_type, uint32_t result) at ./ecolumiere/storage.c:61>:
+                                    ESP_LOGD()
+                                ESP_LOGI()
+                        ESP_LOGI()
+                        slave_node_log_identity() <void slave_node_log_identity (void) at ./ecolumiere/slave_role.c:266>:
+                            slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                            ESP_LOGI()
+                            slave_node_get_mac_string() <const char *slave_node_get_mac_string (void) at ./ecolumiere/slave_role.c:251>:
+                                slave_node_get_mac_address() <const uint8_t *slave_node_get_mac_address (void) at ./ecolumiere/slave_role.c:242>:
+                                snprintf()
+                    ESP_LOGI()
+        ESP_LOGW()
+        vTaskDelay()
+    ecolumiere_system_start() <esp_err_t ecolumiere_system_start (void) at ./ecolumiere/ecolumiere_system.c:245>:
+        ESP_LOGI()
+        xTaskCreate()
+        eco_scheduler_task_wrapper() <void eco_scheduler_task_wrapper (void *pvParameters) at ./ecolumiere/ecolumiere_system.c:39>:
+            ESP_LOGI()
+            ecolumiere_scheduler_task() <void ecolumiere_scheduler_task (void *pvParameters) at ./ecolumiere/ecolumiere.c:741>:
+                ESP_LOGI()
+                ESP_LOGE()
+                vTaskDelay()
+                pdMS_TO_TICKS()
+                xQueueReceive()
+                ESP_LOGD()
+                ecolumiere_app_sched_event_handler() <void ecolumiere_app_sched_event_handler (void *p_event_data) at ./ecolumiere/ecolumiere.c:158>:
+                    ESP_LOGW()
+                ESP_LOGW()
+                vTaskDelete()
+        ESP_LOGE()
+        system_control_task_wrapper() <void system_control_task_wrapper (void *pvParameters) at ./ecolumiere/ecolumiere_system.c:47>:
+            ESP_LOGI()
+            uxTaskGetStackHighWaterMark()
+            data_recorder_task() <void data_recorder_task (void) at ./ecolumiere/datarecorder.c:196>:
+                esp_timer_get_time()
+                ESP_LOGD()
+                slave_node_get_identity() <const slave_identity_t *slave_node_get_identity (void) at ./ecolumiere/slave_role.c:217>:
+                strncmp()
+                strncpy()
+                ESP_LOGW()
+                snprintf()
+                nvs_set_blob()
+                ESP_LOGE()
+                nvs_commit()
+                nvs_set_u32()
+                ESP_LOGI()
+            vTaskDelay()
+            pdMS_TO_TICKS()
+        vTaskDelete()
