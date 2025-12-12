@@ -102,7 +102,7 @@ Il gateway raccoglie i seguenti dati per ciascun nodo:
   - **Colori della luce**: bianca o RGB; in caso RGB indicare il colore attuale
   - **Durata di accensione** e spegnimento: tempo totale (in ore/minuti) durante il quale la lampada è rimasta accesa o spenta.
   - **Posizione del nodo**: identificazione alfanumerica basata sulla planimetria, comprendente stabile, piano, stanza e numero progressivo della lampada (Es: S1–P3–S5–L14 indica Stabile 1, Piano 3, Stanza 5, Lampada 14). La numerazione di ciascun elemento dovrebbe essere definita in fase di stesura della planimetria
-- "Prestazioni energetiche"
+- `Prestazioni energetiche`
   - **Consumo giornaliero di potenza** (W)
   - **Efficienza energetica**: rapporto tra luminosità emessa e potenza consumata
   - **Tensione e corrente**: parametri di stabilità ed efficienza dell’alimentatore
