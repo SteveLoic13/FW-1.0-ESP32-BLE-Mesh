@@ -93,9 +93,8 @@ Le lampade intelligenti all’interno di un sistema Ecolumiere Mesh presentano p
 ### Informazioni raccolte dal gateway
 
 Il gateway raccoglie i seguenti dati per ciascun nodo:
-- #### ID:
-  - identificativo univoco della lampada
-- #### Caratteristiche fisiche
+- `ID`: identificativo univoco della lampada`
+- `Caratteristiche fisiche`
   - **Stato ON/OFF**
   - **Intensità luminosa** (lumen)
   - **Temperatura del colore**: luce bianca calda (~2500K) o bianca fredda (~6500K)
@@ -108,27 +107,70 @@ Il gateway raccoglie i seguenti dati per ciascun nodo:
   - **Tensione e corrente**: parametri di stabilità ed efficienza dell’alimentatore
   - **Energia residua**: utile per valutare la disponibilità complessiva del sistema
   - **Frequenza di accensione e spegnimento**: consente di capire quando la lampada è effettivamente in uso
-- Condizioni ambientali
+- `Condizioni ambientali`
   - **Temperatura** (°C): monitorare eventuali surriscaldamenti
   - **Umidità**
   - **Pressione atmosferica**: ottenere informazioni ambientali a più ampio spettro
-- Interazione e controlli
+- `Interazione e controlli`
   - **Controllo remoto**: verifica se la lampada è stata monitorata tramite APP e registra l’ultimo accesso
   - **Sincronizzazione**: tiene traccia dello stato della rete e dei dispositivi vicini
   - **Giorni programmati**: possibilità di programmare accensione, spegnimento e intensità luminosa della lampada in base a giorni e orari
-- Connettività
+- `Connettività`
   - **Ultima connessione**: registra orario, qualità e intensità del segnale, numero di hop necessari
   - **Stato online** della lampada rispetto al gateway
   - **Qualità e intensità del segnale**
   - **Numero di hop** necessari per raggiungere la destinazione
   - **Tipo di protocollo** utilizzato
-- Manutenzione
+- `Manutenzione`
   - **Ore di vita** dei led
   - **Guasti**: cortocircuiti o sovraccarichi
   - **Reset**: verifica eventuali reset della lampada, aggiornamenti firmware e orario dell’ultimo aggiornamento
-- Funzioni extra
+- `Funzioni extra`
   - **Sensore di movimento**: rileva la presenza di persone in una stanza e lo stato di funzionamento
   - **Sensore di luce**: rileva e riporta i valori luminosi ambientali
   - **Illuminazione intelligente**: autoregolazione del sistema in base alle condizioni ambientali e alle impostazioni di programmazione
+ 
 ### Scansione dei nodi
+
 Si consiglia di eseguire la scansione dei nodi due volte al giorno, al mattino e alla sera, corrispondenti all’apertura e alla chiusura dell’azienda. Il gateway verifica quali nodi hanno risposto alle richieste inviate e genera un report. Se qualche lampada non risponde, confronta l’elenco dei nodi programmati con quelli che hanno risposto e invia un alert all’app per segnalare eventuali mancanze. Un singolo gateway può gestire fino a circa 30.000 nodi all’interno di una rete.
+
+## Struttura del Progetto EcolumiereBleMeshESP32
+
+EcolumiereBleMeshESP32/
+├── 📁 main/                          # Applicazione principale
+│   ├── main.c                       # Entry point (app_main)
+│   ├── board.c                      # Inizializzazione hardware specifica
+│   ├── board.h                      # Definizioni hardware
+│   ├── component.mk                 # Configurazione componenti (legacy)
+│   └── CMakeLists.txt               # Build configuration
+│
+├── 📁 ecolumiere/                   # Framework core del sistema
+│   ├── ecolumiere_system.c/.h       # Gestione e configurazione sistema
+│   ├── scheduler.c/.h               # Scheduler eventi e gestione code
+│   ├── pwmcontroller.c/.h           # Controllo PWM LED e sequenze
+│   ├── zerocross.c/.h               # Rilevamento zero-cross per dimming AC
+│   ├── luxmeter.c/.h                # Gestione sensore luce (ADC)
+│   ├── lightcode.c/.h               # Sistema comunicazione ottica
+│   ├── storage.c/.h                 # Gestione memoria flash NVS
+│   ├── datarecorder.c/.h            # Logging dati e storico
+│   ├── slave_role.c/.h              # Identità dispositivo e logica slave
+│   ├── ecolumiere.c/.h              # Algoritmo intelligente principale
+│   └── CMakeLists.txt               # Configurazione build componente
+│
+├── 📁 ble_mesh_ecolumiere/          # Comunicazione BLE Mesh
+│   ├── ble_mesh_ecolumiere.c        # Implementazione principale BLE Mesh
+│   └── ble_mesh_ecolumiere.h        # Header file
+│
+├── 📁 tools/                        # Strumenti e utility
+│   ├── flash_tool.py                # Script Python per flashing
+│   ├── config_generator.py          # Generatore configurazioni
+│   ├── monitor_serial.py            # Monitor seriale avanzato
+│   └── README_tools.md              # Documentazione tools
+│
+├── 📁 components/                    # Componenti ESP-IDF opzionali
+│   └── 📄 CMakeLists.txt            # Configurazione build per eventuali componenti futuri
+│
+├── 📄 CMakeLists.txt               # Configurazione build principale
+├── 📄 sdkconfig                    # Configurazione ESP-IDF
+├── 📄 .gitignore                   # File ignorati da Git
+└── 📄 README.md                    # Documentazione principale
