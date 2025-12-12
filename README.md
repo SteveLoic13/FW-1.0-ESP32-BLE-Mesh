@@ -93,7 +93,7 @@ Le lampade intelligenti all’interno di un sistema Ecolumiere Mesh presentano p
 ### Informazioni raccolte dal gateway
 
 Il gateway raccoglie i seguenti dati per ciascun nodo:
-- `ID`: identificativo univoco della lampada`
+- `ID`: identificativo univoco della lampada
 - `Caratteristiche fisiche`
   - **Stato ON/OFF**
   - **Intensità luminosa** (lumen)
@@ -136,7 +136,7 @@ Si consiglia di eseguire la scansione dei nodi due volte al giorno, al mattino e
 
 ## Struttura del Progetto EcolumiereBleMeshESP32
 
-EcolumiereBleMeshESP32/
+```EcolumiereBleMeshESP32/
 ├── 📁 main/                         # Applicazione principale
 │   ├── main.c                       # Entry point (app_main)
 │   ├── board.c                      # Inizializzazione hardware specifica
@@ -174,3 +174,4 @@ EcolumiereBleMeshESP32/
 ├── 📄 sdkconfig                    # Configurazione ESP-IDF
 ├── 📄 .gitignore                   # File ignorati da Git
 └── 📄 README.md                    # Documentazione principale
+```
