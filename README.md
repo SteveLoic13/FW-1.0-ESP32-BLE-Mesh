@@ -137,41 +137,41 @@ Si consiglia di eseguire la scansione dei nodi due volte al giorno, al mattino e
 ## Struttura del Progetto EcolumiereBleMeshESP32
 
 ```EcolumiereBleMeshESP32/
-├── 📁 main/                         # Applicazione principale
-│   ├── main.c                       # Entry point (app_main)
-│   ├── board.c                      # Inizializzazione hardware specifica
-│   ├── board.h                      # Definizioni hardware
-│   ├── component.mk                 # Configurazione componenti (legacy)
-│   └── CMakeLists.txt               # Build configuration
+├── 📁 main/                          Applicazione principale
+│   ├── main.c                        Entry point (app_main)
+│   ├── board.c                       Inizializzazione hardware specifica
+│   ├── board.h                       Definizioni hardware
+│   ├── component.mk                  Configurazione componenti (legacy)
+│   └── CMakeLists.txt                Build configuration
 │
-├── 📁 ecolumiere/                   # Framework core del sistema
-│   ├── ecolumiere_system.c/.h       # Gestione e configurazione sistema
-│   ├── scheduler.c/.h               # Scheduler eventi e gestione code
-│   ├── pwmcontroller.c/.h           # Controllo PWM LED e sequenze
-│   ├── zerocross.c/.h               # Rilevamento zero-cross per dimming AC
-│   ├── luxmeter.c/.h                # Gestione sensore luce (ADC)
-│   ├── lightcode.c/.h               # Sistema comunicazione ottica
-│   ├── storage.c/.h                 # Gestione memoria flash NVS
-│   ├── datarecorder.c/.h            # Logging dati e storico
-│   ├── slave_role.c/.h              # Identità dispositivo e logica slave
-│   ├── ecolumiere.c/.h              # Algoritmo intelligente principale
-│   └── CMakeLists.txt               # Configurazione build componente
+├── 📁 ecolumiere/                    Framework core del sistema
+│   ├── ecolumiere_system.c/.h        Gestione e configurazione sistema
+│   ├── scheduler.c/.h                Scheduler eventi e gestione code
+│   ├── pwmcontroller.c/.h            Controllo PWM LED e sequenze
+│   ├── zerocross.c/.h                Rilevamento zero-cross per dimming AC
+│   ├── luxmeter.c/.h                 Gestione sensore luce (ADC)
+│   ├── lightcode.c/.h                Sistema comunicazione ottica
+│   ├── storage.c/.h                  Gestione memoria flash NVS
+│   ├── datarecorder.c/.h             Logging dati e storico
+│   ├── slave_role.c/.h               Identità dispositivo e logica slave
+│   ├── ecolumiere.c/.h               Algoritmo intelligente principale
+│   └── CMakeLists.txt                Configurazione build componente
 │
-├── 📁 ble_mesh_ecolumiere/          # Comunicazione BLE Mesh
-│   ├── ble_mesh_ecolumiere.c        # Implementazione principale BLE Mesh
-│   └── ble_mesh_ecolumiere.h        # Header file
+├── 📁 ble_mesh_ecolumiere/           Comunicazione BLE Mesh
+│   ├── ble_mesh_ecolumiere.c         Implementazione principale BLE Mesh
+│   └── ble_mesh_ecolumiere.h         Header file
 │
-├── 📁 tools/                        # Strumenti e utility
-│   ├── flash_tool.py                # Script Python per flashing
-│   ├── config_generator.py          # Generatore configurazioni
-│   ├── monitor_serial.py            # Monitor seriale avanzato
-│   └── README_tools.md              # Documentazione tools
+├── 📁 tools/                         Strumenti e utility
+│   ├── flash_tool.py                 Script Python per flashing
+│   ├── config_generator.py           Generatore configurazioni
+│   ├── monitor_serial.py             Monitor seriale avanzato
+│   └── README_tools.md               Documentazione tools
 │
-├── 📁 components/                    # Componenti ESP-IDF opzionali
-│   └── 📄 CMakeLists.txt            # Configurazione build per eventuali componenti futuri
+├── 📁 components/                   Componenti ESP-IDF opzionali
+│   └── 📄 CMakeLists.txt            Configurazione build per eventuali componenti futuri
 │
-├── 📄 CMakeLists.txt               # Configurazione build principale
-├── 📄 sdkconfig                    # Configurazione ESP-IDF
-├── 📄 .gitignore                   # File ignorati da Git
-└── 📄 README.md                    # Documentazione principale
+├── 📄 CMakeLists.txt                Configurazione build principale
+├── 📄 sdkconfig                     Configurazione ESP-IDF
+├── 📄 .gitignore                    File ignorati da Git
+└── 📄 README.md                     Documentazione principale
 ```
