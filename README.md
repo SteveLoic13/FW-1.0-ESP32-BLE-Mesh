@@ -82,47 +82,53 @@ Questi comandi sono impartiti dal gateway, a cui, a sua volta, vengono inoltrati
 Un esempio di comando inviato via UART può essere `hsl 12 34 56`, che il gateway interpreterà come invio di opcode 0x8276 con valori 12, 34, 56. In futuro il comando prenderà la forma di `hsl 0x1234 12 34 56`, per una rete con molteplici nodi.
 
 ## SPECIFICHE SISTEMA ECOLUMIERE MESH
+
 Le lampade intelligenti all’interno di un sistema Ecolumiere Mesh presentano parametri fondamentali per il monitoraggio e la gestione. Questi parametri possono essere suddivisi in caratteristiche fisiche, prestazioni energetiche, condizioni ambientali, interazione con l’utente e manutenzione. Le lampade sfruttano la tecnologia Bluetooth Mesh, in cui i nodi (lampade) sono collegati a un gateway che funge da ponte tra la rete Bluetooth e quella Wi-Fi.
+
 ### Caratteristiche dei nodi
+
 - I nodi non devono essere distanti più di 10 metri l’uno dall’altro, preferibilmente senza ostacoli intermedi.
 - I nodi che aggregano altri nodi vengono elevati a relay node, creando una gerarchia all’interno della rete. Ad esempio, i nodi dei corridoi o delle scale possono diventare relay node, mentre quelli delle stanze restano nodi semplici. Se la comunicazione diretta tra alcuni nodi viene interrotta, il relay node garantisce l’inoltro corretto dei messaggi, mantenendo la continuità della rete Bluetooth Mesh.
+
 ### Informazioni raccolte dal gateway
+
 Il gateway raccoglie i seguenti dati per ciascun nodo:
-- ID: identificativo univoco della lampada
-- Caratteristiche fisiche
-  - Stato ON/OFF
-  - Intensità luminosa (lumen)
-  - Temperatura del colore: luce bianca calda (~2500K) o bianca fredda (~6500K)
-  - Colori della luce: bianca o RGB; in caso RGB indicare il colore attuale
-  - Durata di accensione e spegnimento: tempo totale (in ore/minuti) durante il quale la lampada è rimasta accesa o spenta.
-  - Posizione del nodo: identificazione alfanumerica basata sulla planimetria, comprendente stabile, piano, stanza e numero progressivo della lampada (Es: S1–P3–S5–L14 indica Stabile 1, Piano 3, Stanza 5, Lampada 14). La numerazione di ciascun elemento dovrebbe essere definita in fase di stesura della planimetria
-- Prestazioni energetiche
- - Consumo giornaliero di potenza (W)
-  - Efficienza energetica: rapporto tra luminosità emessa e potenza consumata
-  - Tensione e corrente: parametri di stabilità ed efficienza dell’alimentatore
-  - Energia residua: utile per valutare la disponibilità complessiva del sistema
-  - Frequenza di accensione e spegnimento: consente di capire quando la lampada è effettivamente in uso
+- #### ID:
+  - identificativo univoco della lampada
+- #### Caratteristiche fisiche
+  - **Stato ON/OFF**
+  - **Intensità luminosa** (lumen)
+  - **Temperatura del colore**: luce bianca calda (~2500K) o bianca fredda (~6500K)
+  - **Colori della luce**: bianca o RGB; in caso RGB indicare il colore attuale
+  - **Durata di accensione** e spegnimento: tempo totale (in ore/minuti) durante il quale la lampada è rimasta accesa o spenta.
+  - **Posizione del nodo**: identificazione alfanumerica basata sulla planimetria, comprendente stabile, piano, stanza e numero progressivo della lampada (Es: S1–P3–S5–L14 indica Stabile 1, Piano 3, Stanza 5, Lampada 14). La numerazione di ciascun elemento dovrebbe essere definita in fase di stesura della planimetria
+- "Prestazioni energetiche"
+  - **Consumo giornaliero di potenza** (W)
+  - **Efficienza energetica**: rapporto tra luminosità emessa e potenza consumata
+  - **Tensione e corrente**: parametri di stabilità ed efficienza dell’alimentatore
+  - **Energia residua**: utile per valutare la disponibilità complessiva del sistema
+  - **Frequenza di accensione e spegnimento**: consente di capire quando la lampada è effettivamente in uso
 - Condizioni ambientali
-  - Temperatura (°C): monitorare eventuali surriscaldamenti
-  - Umidità
-  - Pressione atmosferica: ottenere informazioni ambientali a più ampio spettro
-  - Interazione e controlli
-  - Controllo remoto: verifica se la lampada è stata monitorata tramite APP e registra l’ultimo accesso
-  - Sincronizzazione: tiene traccia dello stato della rete e dei dispositivi vicini
-  - Giorni programmati: possibilità di programmare accensione, spegnimento e intensità luminosa della lampada in base a giorni e orari
-  - Connettività
-  - Ultima connessione: registra orario, qualità e intensità del segnale, numero di hop necessari
-  - Stato online della lampada rispetto al gateway
-  - Qualità e intensità del segnale
-  - Numero di hop necessari per raggiungere la destinazione
-  - Tipo di protocollo utilizzato
+  - **Temperatura** (°C): monitorare eventuali surriscaldamenti
+  - **Umidità**
+  - **Pressione atmosferica**: ottenere informazioni ambientali a più ampio spettro
+- Interazione e controlli
+  - **Controllo remoto**: verifica se la lampada è stata monitorata tramite APP e registra l’ultimo accesso
+  - **Sincronizzazione**: tiene traccia dello stato della rete e dei dispositivi vicini
+  - **Giorni programmati**: possibilità di programmare accensione, spegnimento e intensità luminosa della lampada in base a giorni e orari
+- Connettività
+  - **Ultima connessione**: registra orario, qualità e intensità del segnale, numero di hop necessari
+  - **Stato online** della lampada rispetto al gateway
+  - **Qualità e intensità del segnale**
+  - **Numero di hop** necessari per raggiungere la destinazione
+  - **Tipo di protocollo** utilizzato
 - Manutenzione
-  - Ore di vita dei led
-  - Guasti: cortocircuiti o sovraccarichi
-  - Reset: verifica eventuali reset della lampada, aggiornamenti firmware e orario dell’ultimo aggiornamento
+  - **Ore di vita** dei led
+  - **Guasti**: cortocircuiti o sovraccarichi
+  - **Reset**: verifica eventuali reset della lampada, aggiornamenti firmware e orario dell’ultimo aggiornamento
 - Funzioni extra
-  - Sensore di movimento: rileva la presenza di persone in una stanza e lo stato di funzionamento
-  - Sensore di luce: rileva e riporta i valori luminosi ambientali
-  - Illuminazione intelligente: autoregolazione del sistema in base alle condizioni ambientali e alle impostazioni di programmazione
+  - **Sensore di movimento**: rileva la presenza di persone in una stanza e lo stato di funzionamento
+  - **Sensore di luce**: rileva e riporta i valori luminosi ambientali
+  - **Illuminazione intelligente**: autoregolazione del sistema in base alle condizioni ambientali e alle impostazioni di programmazione
 ### Scansione dei nodi
 Si consiglia di eseguire la scansione dei nodi due volte al giorno, al mattino e alla sera, corrispondenti all’apertura e alla chiusura dell’azienda. Il gateway verifica quali nodi hanno risposto alle richieste inviate e genera un report. Se qualche lampada non risponde, confronta l’elenco dei nodi programmati con quelli che hanno risposto e invia un alert all’app per segnalare eventuali mancanze. Un singolo gateway può gestire fino a circa 30.000 nodi all’interno di una rete.
