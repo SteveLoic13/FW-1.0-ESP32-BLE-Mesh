@@ -306,7 +306,7 @@ static esp_ble_mesh_light_hsl_srv_t hsl_server = {
 // 7.2 MODELLO HSL: COMPONENTE DI CONFIGURAZIONE (HSL Setup Server)
 // ---------------------------------------------------------------------------------
 // Gestisce esclusivamente la configurazione del modello HSL:
-// - Binding a chiavi applicative (AppKey binding)
+// - Binding a chiavi applicative (AppKey binding) - un'AppKey è una chiave di criptazione
 // - Configurazione indirizzi di pubblicazione
 // - Sottoscrizioni a gruppi
 // NON gestisce lo stato operativo della luce, solo la configurazione del modello.
@@ -448,7 +448,23 @@ static void sensor_data_initialize(void)
     // Corrente (2 byte, little-endian)
     net_buf_simple_add_le16(&sensor_data_7, current_sensor);
 
-    ESP_LOGI(TAG, "🔧 Tutti i Sensor dati initializzati");
+// ?? CODICE COMMENTATO DA VERIFICARE/COMPLETARE:
+// Questo codice tenta di ri-abilitare esplicitamente il relay dopo il provisioning,
+// ma è attualmente commentato e potrebbe contenere errori.
+// esp_ble_mesh_cfg_srv_t *cfg_srv = NULL;
+// esp_ble_mesh_model_t *model = &root_models[0]
+// if (model) {
+//     cfg_srv = model->user_data;
+//     if (cfg_srv) {
+//         cfg_srv->relay = ESP_BLE_MESH_RELAY_ENABLED;
+//         cfg_srv->relay_retransmit = ESP_BLE_MESH_TRANSMIT(4, 50);
+//         ESP_LOGI(TAG, "Relay explicitly enabled after provisioning");
+//     }
+// }
+
+uint16_t initial_pwm = pwmcontroller_get_current_level();
+
+ESP_LOGI(TAG, "🔧 Tutti i Sensor dati initializzati - Avviato Con PWM: %u", initial_pwm);
 }
 
 /**
@@ -486,37 +502,46 @@ static void example_ble_mesh_provisioning_cb(esp_ble_mesh_prov_cb_event_t event,
                                              esp_ble_mesh_prov_cb_param_t *param)
 {
     switch (event) {
-    case ESP_BLE_MESH_PROV_REGISTER_COMP_EVT:
+    case ESP_BLE_MESH_PROV_REGISTER_COMP_EVT:   // Stack provisioning inizializzato - pronto per operare
+        // Log dello stato di registrazione: 0 = successo, altri valori = errore specifico
         ESP_LOGI(TAG, "ESP_BLE_MESH_PROV_REGISTER_COMP_EVT, err_code %d", 
                  param->prov_register_comp.err_code);
         break;
-        
-    case ESP_BLE_MESH_NODE_PROV_ENABLE_COMP_EVT:
+
+    case ESP_BLE_MESH_NODE_PROV_ENABLE_COMP_EVT:    // Nodo ora visibile e in attesa di provisioning
+        // Log conferma: dispositivo può essere scoperto dai provisioner (app/gateway)
         ESP_LOGI(TAG, "ESP_BLE_MESH_NODE_PROV_ENABLE_COMP_EVT, err_code %d", 
                  param->node_prov_enable_comp.err_code);
         break;
         
-    case ESP_BLE_MESH_NODE_PROV_LINK_OPEN_EVT:
+    case ESP_BLE_MESH_NODE_PROV_LINK_OPEN_EVT:  // Un provisioner ha iniziato sessione con questo nodo
+        // Log tipo di connessione: PB-ADV (messaggi advertising) o PB-GATT (connessione BLE classica)
         ESP_LOGI(TAG, "ESP_BLE_MESH_NODE_PROV_LINK_OPEN_EVT, bearer %s",
             param->node_prov_link_open.bearer == ESP_BLE_MESH_PROV_ADV ? "PB-ADV" : "PB-GATT");
         break;
         
-    case ESP_BLE_MESH_NODE_PROV_LINK_CLOSE_EVT:
+    case ESP_BLE_MESH_NODE_PROV_LINK_CLOSE_EVT: // Sessione provisioning terminata (successo o fallimento)
+        // Log chiusura connessione - il bearer indica il canale usato durante la sessione
         ESP_LOGI(TAG, "ESP_BLE_MESH_NODE_PROV_LINK_CLOSE_EVT, bearer %s",
             param->node_prov_link_close.bearer == ESP_BLE_MESH_PROV_ADV ? "PB-ADV" : "PB-GATT");
         break;
         
-    case ESP_BLE_MESH_NODE_PROV_COMPLETE_EVT:
+    case ESP_BLE_MESH_NODE_PROV_COMPLETE_EVT:   // MOMENTO CRITICO: provisioning completato con successo
+        // Log evento e chiamata a funzione che gestisce post-provisioning
         ESP_LOGI(TAG, "ESP_BLE_MESH_NODE_PROV_COMPLETE_EVT");
+        // Chiama prov_complete() che: 1) spegne LED verde, 2) notifica slave node,
+        // 3) avvia luxmeter, 4) inizializza dati sensori
         prov_complete(param->node_prov_complete.net_idx, param->node_prov_complete.addr,
             param->node_prov_complete.flags, param->node_prov_complete.iv_index);
         break;
         
-    case ESP_BLE_MESH_NODE_PROV_RESET_EVT:
+    case ESP_BLE_MESH_NODE_PROV_RESET_EVT:      // Reset a fabbrica - perdita di tutte le configurazioni
+        // Log reset: il dispositivo torna allo stato "unprovisioned" e può essere riprovisionato
         ESP_LOGI(TAG, "ESP_BLE_MESH_NODE_PROV_RESET_EVT");
         break;
         
-    case ESP_BLE_MESH_NODE_SET_UNPROV_DEV_NAME_COMP_EVT:
+    case ESP_BLE_MESH_NODE_SET_UNPROV_DEV_NAME_COMP_EVT:    // Nome personalizzato configurato per fase discovery
+        // Log risultato impostazione nome (es: "Ecolumiere-Light-01")
         ESP_LOGI(TAG, "ESP_BLE_MESH_NODE_SET_UNPROV_DEV_NAME_COMP_EVT, err_code %d", 
                  param->node_set_unprov_dev_name_comp.err_code);
         break;
@@ -529,23 +554,28 @@ static void example_ble_mesh_provisioning_cb(esp_ble_mesh_prov_cb_event_t event,
 /**
  * @brief Callback per eventi del Configuration Server
  * 
- * Gestisce cambiamenti di stato nella configurazione del nodo mesh.
+ * Gestisce cambiamenti di configurazione inviati dal provisioner (es: telefono/gateway).
+ * Il Configuration Server è un modello speciale che gestisce la configurazione di rete.
  */
 static void example_ble_mesh_config_server_cb(esp_ble_mesh_cfg_server_cb_event_t event,
                                               esp_ble_mesh_cfg_server_cb_param_t *param)
 {
+    // Solo gli eventi di cambio stato sono gestiti (altri eventi ignorati)
     if (event == ESP_BLE_MESH_CFG_SERVER_STATE_CHANGE_EVT) {
         switch (param->ctx.recv_op) {
-        case ESP_BLE_MESH_MODEL_OP_APP_KEY_ADD:
-            ESP_LOGI(TAG, "ESP_BLE_MESH_MODEL_OP_APP_KEY_ADD");
-            ESP_LOGI(TAG, "net_idx 0x%04x, app_idx 0x%04x",
+        case ESP_BLE_MESH_MODEL_OP_APP_KEY_ADD: // Provisioner ha aggiunto una AppKey al nodo
+            ESP_LOGI(TAG, "ESP_BLE_MESH_MODEL_OP_APP_KEY_ADD"); // Log dell'operazione e dettagli della chiave applicativa
+            ESP_LOGI(TAG, "net_idx 0x%04x, app_idx 0x%04x", // net_idx: indice rete, app_idx: indice AppKey
                 param->value.state_change.appkey_add.net_idx,
                 param->value.state_change.appkey_add.app_idx);
-            ESP_LOG_BUFFER_HEX("AppKey", param->value.state_change.appkey_add.app_key, 16);
+            ESP_LOG_BUFFER_HEX("AppKey", param->value.state_change.appkey_add.app_key, 16); // Stampa i 16 byte della AppKey (chiave di crittografia per messaggi applicativi)
             break;
             
-        case ESP_BLE_MESH_MODEL_OP_MODEL_APP_BIND:
+        case ESP_BLE_MESH_MODEL_OP_MODEL_APP_BIND: // AppKey associata a un modello specifico
             ESP_LOGI(TAG, "ESP_BLE_MESH_MODEL_OP_MODEL_APP_BIND");
+            
+            // elem_addr: indirizzo elemento, app_idx: quale AppKey
+            // cid: Company ID, mod_id: ID modello
             ESP_LOGI(TAG, "elem_addr 0x%04x, app_idx 0x%04x, cid 0x%04x, mod_id 0x%04x",
                 param->value.state_change.mod_app_bind.element_addr,
                 param->value.state_change.mod_app_bind.app_idx,
@@ -553,8 +583,11 @@ static void example_ble_mesh_config_server_cb(esp_ble_mesh_cfg_server_cb_event_t
                 param->value.state_change.mod_app_bind.model_id);
             break;
             
-        case ESP_BLE_MESH_MODEL_OP_MODEL_SUB_ADD:
+        case ESP_BLE_MESH_MODEL_OP_MODEL_SUB_ADD: // Aggiunge modello alla lista di ascolto di un gruppo
             ESP_LOGI(TAG, "ESP_BLE_MESH_MODEL_OP_MODEL_SUB_ADD");
+            
+            // elem_addr: elemento locale, sub_addr: indirizzo gruppo
+            // cid/mod_id: identificano il modello sottoscritto
             ESP_LOGI(TAG, "elem_addr 0x%04x, sub_addr 0x%04x, cid 0x%04x, mod_id 0x%04x",
                 param->value.state_change.mod_sub_add.element_addr,
                 param->value.state_change.mod_sub_add.sub_addr,
@@ -578,10 +611,11 @@ static void example_ble_mesh_custom_model_cb(esp_ble_mesh_model_cb_event_t event
                                              esp_ble_mesh_model_cb_param_t *param)
 {
     switch (event) {
+    // Ricevuto messaggio destinato a un modello
 
-    case ESP_BLE_MESH_MODEL_OPERATION_EVT:
-        if (param->model_operation.opcode == ESP_BLE_MESH_VND_MODEL_OP_SEND) {
-
+    // Verifica se è un messaggio per il nostro modello vendor personalizzato
+    if (param->model_operation.opcode == ESP_BLE_MESH_VND_MODEL_OP_SEND) {
+        // Gestisce il comando custom del modello vendor (configdata_t)
             // Verifica che la lunghezza del messaggio corrisponda alla struttura configdata_t
             if (param->model_operation.length == sizeof(configdata_t)) {
                 configdata_t *cfg = (configdata_t *)param->model_operation.msg;
@@ -589,7 +623,7 @@ static void example_ble_mesh_custom_model_cb(esp_ble_mesh_model_cb_event_t event
                 // Estrae la luminosità (0-100%)
                 uint8_t brightness_percent = cfg->brightness;
 
-                // ? Gestione speciale per brightness=1 (forse indica OFF?)
+                // ?? Gestione speciale per brightness=1 (forse indica OFF?)
                 if(cfg->brightness == 1){
                     brightness_percent = 0;
                 }
@@ -653,7 +687,8 @@ static void example_ble_mesh_custom_model_cb(esp_ble_mesh_model_cb_event_t event
         }
         break;
 
-    case ESP_BLE_MESH_MODEL_SEND_COMP_EVT:
+    case ESP_BLE_MESH_MODEL_SEND_COMP_EVT:  // Invio messaggio completato (conferma trasmissione)
+    // Controlla se l'invio ha avuto errori (err_code != 0 significa fallimento)
         if (param->model_send_comp.err_code) {
             ESP_LOGE(TAG, "Failed to send message 0x%06" PRIx32, param->model_send_comp.opcode);
             break;
@@ -689,12 +724,12 @@ static uint16_t example_ble_mesh_get_sensor_data(esp_ble_mesh_sensor_state_t *st
 
     // Gestisce dati di lunghezza zero (Format B speciale)
     if (state->sensor_data.length == ESP_BLE_MESH_SENSOR_DATA_ZERO_LEN) {
-        /* Per dati sensore a lunghezza zero, la lunghezza è 0x7F e il formato è Format B */
+        /* Per dati sensore a lunghezza zero */
         mpid = ESP_BLE_MESH_SENSOR_DATA_FORMAT_B_MPID(state->sensor_data.length, state->sensor_property_id);
         mpid_len = ESP_BLE_MESH_SENSOR_DATA_FORMAT_B_MPID_LEN;
         data_len = 0;
     } else {
-        // Dati normali: sceglie formato in base al campo format
+        // Dati normali: sceglie formato
         if (state->sensor_data.format == ESP_BLE_MESH_SENSOR_DATA_FORMAT_A) {
             mpid = ESP_BLE_MESH_SENSOR_DATA_FORMAT_A_MPID(state->sensor_data.length, state->sensor_property_id);
             mpid_len = ESP_BLE_MESH_SENSOR_DATA_FORMAT_A_MPID_LEN;
@@ -765,7 +800,7 @@ static void example_ble_mesh_send_sensor_status(esp_ble_mesh_sensor_server_cb_pa
         goto send;
     }
 
-    // Se la richiesta specifica un Property ID, invia solo quel sensore
+    // Altrimenti il campo Marshalled Sensor data conterrà solo i dati per le proprietà del dispositivo richiesto
     for (i = 0; i < ARRAY_SIZE(sensor_states); i++) {
         if (param->value.get.sensor_data.property_id == sensor_states[i].sensor_property_id) {
             length = example_ble_mesh_get_sensor_data(&sensor_states[i], status);
@@ -808,18 +843,18 @@ static void example_ble_mesh_sensor_server_cb(esp_ble_mesh_sensor_server_cb_even
         event, param->ctx.addr, param->ctx.recv_dst, param->model->model_id);
 
     switch (event) {
-    case ESP_BLE_MESH_SENSOR_SERVER_RECV_GET_MSG_EVT:
+    case ESP_BLE_MESH_SENSOR_SERVER_RECV_GET_MSG_EVT: // Ricevuto messaggio GET
         switch (param->ctx.recv_op) {
-        case ESP_BLE_MESH_MODEL_OP_SENSOR_GET:
+        case ESP_BLE_MESH_MODEL_OP_SENSOR_GET: // Richiesta dati sensore
             ESP_LOGI(TAG, "ESP_BLE_MESH_MODEL_OP_SENSOR_GET");
-            example_ble_mesh_send_sensor_status(param);
+            example_ble_mesh_send_sensor_status(param); // Invia risposta con i dati del sensore
             break;
-        default:
+        default: // Opcode GET non riconosciuto
             ESP_LOGE(TAG, "Unknown Sensor Get opcode 0x%04" PRIx32, param->ctx.recv_op);
             return;
         }
         break;
-    default:
+    default: // Evento non riconosciuto
         ESP_LOGE(TAG, "Unknown Sensor Server event %d", event);
         break;
     }
@@ -830,10 +865,6 @@ static void example_ble_mesh_sensor_server_cb(esp_ble_mesh_sensor_server_cb_even
  * 
  * @param lightness Valore di lightness da convertire
  * @return uint8_t Livello PWM corrispondente (0-32)
- * 
- * Gestisce due scale possibili per lightness:
- * - Scala 0-100: utilizzata dall'applicazione
- * - Scala 0-65535: utilizzata dal modello HSL Mesh
  */
 static uint8_t convert_lightness_to_pwm(uint16_t lightness)
 {
@@ -851,7 +882,7 @@ static uint8_t convert_lightness_to_pwm(uint16_t lightness)
                  lightness, LIGHT_MAX_LEVEL);
     }
 
-    // Controllo di sicurezza ridondante
+    // Controllo di sicurezza (dovrebbe essere ridondante ma meglio prevenire)
     if (pwm_level > LIGHT_MAX_LEVEL) {
         pwm_level = LIGHT_MAX_LEVEL;
         ESP_LOGE(TAG, "❌ ERRORE: pwm_level > MAX, corretto a %d", LIGHT_MAX_LEVEL);
@@ -871,8 +902,7 @@ static void example_ble_mesh_light_server_cb(esp_ble_mesh_lighting_server_cb_eve
                                              esp_ble_mesh_lighting_server_cb_param_t *param)
 {
     switch (event) {
-    case ESP_BLE_MESH_LIGHTING_SERVER_STATE_CHANGE_EVT:
-        // Stato HSL cambiato (dopo transizione)
+    case ESP_BLE_MESH_LIGHTING_SERVER_STATE_CHANGE_EVT: // Stato HSL cambiato (dopo transizione)
         if (param->ctx.recv_op == ESP_BLE_MESH_MODEL_OP_LIGHT_HSL_SET) {
             uint16_t hue = hsl_state.hue;
             uint16_t sat = hsl_state.saturation;
@@ -887,10 +917,10 @@ static void example_ble_mesh_light_server_cb(esp_ble_mesh_lighting_server_cb_eve
 
             // Crea evento per lo scheduler
             ble_mesh_event_t mesh_event = {
-                .brightness = lightness,      // 0-100 (lightness)
-                .pwm_level = pwm_level,       // 0-32
-                .hue = hue,                   // mantieni hue
-                .saturation = sat,            // mantieni sat
+                .brightness = lightness,
+                .pwm_level = pwm_level,
+                .hue = hue,
+                .saturation = sat,
                 .is_override = true,
                 .timestamp = esp_timer_get_time()
             };
@@ -899,7 +929,7 @@ static void example_ble_mesh_light_server_cb(esp_ble_mesh_lighting_server_cb_eve
             esp_err_t sched_err = scheduler_put_event(&mesh_event, sizeof(mesh_event),
                                                      SCH_EVT_BLE_MESH_RX, handle_ble_mesh_event);
 
-            if (sched_err == ESP_OK) {
+            if (sched_err == ESP_OK) { // Controllo del successo dell'invio
                 ESP_LOGI(TAG, "📨 HSL Event queued to scheduler");
             } else {
                 ESP_LOGE(TAG, "❌ Failed to queue HSL event");
@@ -914,8 +944,7 @@ static void example_ble_mesh_light_server_cb(esp_ble_mesh_lighting_server_cb_eve
         }
         break;
 
-    case ESP_BLE_MESH_LIGHTING_SERVER_RECV_SET_MSG_EVT:
-        // Ricevuto messaggio SET (con o senza ack)
+    case ESP_BLE_MESH_LIGHTING_SERVER_RECV_SET_MSG_EVT: // Ricevuto messaggio SET (con o senza ack)
         if (param->ctx.recv_op == ESP_BLE_MESH_MODEL_OP_LIGHT_HSL_SET ||
             param->ctx.recv_op == ESP_BLE_MESH_MODEL_OP_LIGHT_HSL_SET_UNACK) {
 
@@ -941,6 +970,9 @@ static void example_ble_mesh_light_server_cb(esp_ble_mesh_lighting_server_cb_eve
 
             ESP_LOGI(TAG, "🎛️ BLE Set → PWM: %u → %u/32", lightness, pwm_level);
 
+            // ?? Aggiorna lampadina fisica
+            // board_set_led_hsl(hue, sat, lightness);
+
             // Sincronizza lo stato del nodo lampada con i nuovi valori HSL
             sync_nodo_lampada_with_hsl(hue, sat, lightness);
 
@@ -955,8 +987,7 @@ static void example_ble_mesh_light_server_cb(esp_ble_mesh_lighting_server_cb_eve
         }
         break;
 
-    case ESP_BLE_MESH_LIGHTING_SERVER_RECV_GET_MSG_EVT:
-        // Ricevuta richiesta GET per stato HSL
+    case ESP_BLE_MESH_LIGHTING_SERVER_RECV_GET_MSG_EVT: // Ricevuta richiesta GET per stato HSL
         if (param->ctx.recv_op == ESP_BLE_MESH_MODEL_OP_LIGHT_HSL_GET) {
 
             // Legge livello PWM corrente dall'hardware
@@ -1125,7 +1156,7 @@ void sync_nodo_lampada_with_hsl(uint16_t hue, uint16_t saturation, uint16_t ligh
         ESP_LOGI(TAG, "⏰ Spegnimento registrato");
     }
 
-    // Salva lo stato aggiornato
+    // Salva lo stato aggiornato ?? SLAVE?
     slave_node_update_lampada_data(&lampada_aggiornata);
 
     // Registra l'evento nel data recorder
