@@ -208,18 +208,17 @@ Il nodo implementa tre modelli principali BLE Mesh:
 
 - Strutture Dati Principali
   - Stato HSL Globale
-```
-static esp_ble_mesh_light_hsl_state_t hsl_state = {
-    .lightness = 0xFFFF,      // Luminosità corrente (max)
-    .hue = 0,                 // Tonalità (0-360°)
-    .saturation = 0xFFFF,     // Saturazione (max)
-    .target_lightness = 0xFFFF,  // Valori target per transizioni
-    .target_hue = 0,
-    .target_saturation = 0xFFFF,
-    .status_code = ESP_BLE_MESH_MODEL_STATUS_SUCCESS
-};
-```
-
+    ```
+    static esp_ble_mesh_light_hsl_state_t hsl_state = {
+        .lightness = 0xFFFF,      // Luminosità corrente (max)
+        .hue = 0,                 // Tonalità (0-360°)
+        .saturation = 0xFFFF,     // Saturazione (max)
+        .target_lightness = 0xFFFF,  // Valori target per transizioni
+        .target_hue = 0,
+        .target_saturation = 0xFFFF,
+        .status_code = ESP_BLE_MESH_MODEL_STATUS_SUCCESS
+    };
+    ```
   - Buffer Dati Sensori
     8 buffer NetBuf statici contenenti i dati grezzi dei sensori, formattati secondo le specifiche Mesh Model.
 
