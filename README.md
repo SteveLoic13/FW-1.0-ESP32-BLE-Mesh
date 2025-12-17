@@ -137,8 +137,8 @@ Si consiglia di eseguire la scansione dei nodi due volte al giorno, al mattino e
 ## Struttura del Progetto EcolumiereBleMeshESP32
 
 ```EcolumiereBleMeshESP32/
-├── 📁 main/                          # Applicazione principale
-│   ├── main.c                       # Entry point (app_main)
+├── 📁 main/                          // Applicazione principale
+│   ├── main.c                       // Entry point (app_main)
 │   ├── board.c                      # Inizializzazione hardware specifica
 │   ├── board.h                      # Definizioni hardware
 │   ├── component.mk                 # Configurazione componenti (legacy)
