@@ -184,9 +184,9 @@ Questo file implementa il funzionamento del sistema BLE Meshe Ecolumiere. Combin
 
 - Modelli Implementati
 Il nodo implementa tre modelli principali BLE Mesh:
-  1. Modello Sensor (Standard SIG)
-   Scopo: Esporre letture da 8 sensori ambientali ed energetici
-   Sensori gestiti:
+   ```Modello Sensor (Standard SIG)```
+  - Scopo: Esporre letture da 8 sensori ambientali ed energetici
+  - Sensori gestiti:
       - Temperatura interna (indoor_temp, 1 byte)
       - Potenza istantanea assorbita (potenza_istantanea_assorbita, 2 byte, BIG ENDIAN)
       - Umidità (humidity_sensor, 2 byte, risoluzione 0.01%)
@@ -219,8 +219,7 @@ Il nodo implementa tre modelli principali BLE Mesh:
         .status_code = ESP_BLE_MESH_MODEL_STATUS_SUCCESS
     };
     ```
-  - Buffer Dati Sensori
-  8 buffer NetBuf statici contenenti i dati grezzi dei sensori, formattati secondo le specifiche Mesh Model.
+  - Buffer Dati Sensori: 8 buffer NetBuf statici contenenti i dati grezzi dei sensori, formattati secondo le specifiche Mesh Model.
 
 ### Funzioni Principali
 1. Inizializzazione - ble_mesh_ecolumiere_init()
