@@ -198,14 +198,14 @@ Il nodo implementa tre modelli principali BLE Mesh:
         - Corrente (current_sensor, 2 byte, risoluzione 0.01A)
 
   2. ```Modello HSL``` - Hue, Saturation, Lightness (Standard SIG)
-    - Scopo: Controllo avanzato dell'illuminazione
-    - Stato gestito: hsl_state con lightness (0-100%), hue (tonalità), saturation (saturazione)
-    - Funzionalità: Transizioni graduali, controllo colore, impostazione target
+      - Scopo: Controllo avanzato dell'illuminazione
+      - Stato gestito: hsl_state con lightness (0-100%), hue (tonalità), saturation (saturazione)
+      - Funzionalità: Transizioni graduali, controllo colore, impostazione target
 
   3. ```Modello Vendor Personalizzato```
-    - Scopo: Comandi custom specifici del sistema Ecolumiere
-    - Struttura dati: configdata_t con brightness, color_temp, RGB, dimStep
-    - Uso: Configurazioni avanzate non coperte dallo standard HSL
+      - Scopo: Comandi custom specifici del sistema Ecolumiere
+      - Struttura dati: configdata_t con brightness, color_temp, RGB, dimStep
+      - Uso: Configurazioni avanzate non coperte dallo standard HSL
 
 #### Strutture Dati Principali
   - *Stato HSL Globale*
