@@ -182,9 +182,10 @@ Questo file implementa il funzionamento del sistema BLE Meshe Ecolumiere. Combin
 
 ### Architettura del Nodo
 
-- Modelli Implementati
+#### Modelli Implementati
 Il nodo implementa tre modelli principali BLE Mesh:
-   ```Modello Sensor (Standard SIG)```
+
+```Modello Sensor (Standard SIG)```
   - Scopo: Esporre letture da 8 sensori ambientali ed energetici
   - Sensori gestiti:
       - Temperatura interna (indoor_temp, 1 byte)
