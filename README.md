@@ -137,7 +137,7 @@ Si consiglia di eseguire la scansione dei nodi due volte al giorno, al mattino e
 ## Struttura del Progetto EcolumiereBleMeshESP32
 
 ```EcolumiereBleMeshESP32/
-├── 📁 main/                          # Applicazione principale
+├── 📁 main/                         # Applicazione principale
 │   ├── main.c                       # Entry point (app_main)
 │   ├── board.c                      # Inizializzazione hardware specifica
 │   ├── board.h                      # Definizioni hardware
@@ -167,11 +167,231 @@ Si consiglia di eseguire la scansione dei nodi due volte al giorno, al mattino e
 │   ├── monitor_serial.py            # Monitor seriale avanzato
 │   └── README_tools.md              # Documentazione tools
 │
-├── 📁 components/                    # Componenti ESP-IDF opzionali
-│   └── 📄 CMakeLists.txt            # Configurazione build per eventuali componenti futuri
+├── 📁 components/                  # Componenti ESP-IDF opzionali
+│   └── 📄 CMakeLists.txt           # Configurazione build per eventuali componenti futuri
 │
 ├── 📄 CMakeLists.txt               # Configurazione build principale
 ├── 📄 sdkconfig                    # Configurazione ESP-IDF
 ├── 📄 .gitignore                   # File ignorati da Git
 └── 📄 README.md                    # Documentazione principale
+```
+
+## ble_mesh_ecolumiere.c - Sistema BLE Mesh per Illuminazione Intelligente Ecolumiere
+
+### Panoramica
+
+Questo file implementa il funzionamento del sistema BLE Meshe Ecolumiere. Combina modelli standard (Sensor, HSL) con un modello vendor personalizzato per gestire controllo luci, monitoraggio sensori e comandi applicativi specifici.
+
+### Architettura del Nodo
+
+#### Modelli Implementati
+
+Il nodo implementa tre modelli principali BLE Mesh:
+
+##### ```Modello Sensor (Standard SIG)```**
+
+   - Scopo: Esporre letture da 8 sensori ambientali ed energetici
+   - Sensori gestiti:
+     - Temperatura interna (indoor_temp, 1 byte)
+     - Potenza istantanea assorbita (potenza_istantanea_assorbita, 2 byte, BIG ENDIAN)
+     - Umidità (humidity_sensor, 2 byte, risoluzione 0.01%)
+     - Pressione (pressure_sensor, 2 byte, risoluzione 0.01 hPa)
+     - Codice errore (error_code, 1 byte)
+     - Illuminamento (illuminance_sensor, 4 byte, lux)
+     - Tensione (voltage_sensor, 2 byte, risoluzione 0.01V)
+     - Corrente (current_sensor, 2 byte, risoluzione 0.01A)
+
+##### ```Modello HSL``` - Hue, Saturation, Lightness (Standard SIG)
+   
+   - Scopo: Controllo avanzato dell'illuminazione
+   - Stato gestito: hsl_state con lightness (0-100%), hue (tonalità), saturation (saturazione)
+   - Funzionalità: Transizioni graduali, controllo colore, impostazione target
+
+##### ```Modello Vendor Personalizzato```
+   
+   - Scopo: Comandi custom specifici del sistema Ecolumiere
+   - Struttura dati: configdata_t con brightness, color_temp, RGB, dimStep
+   - Uso: Configurazioni avanzate non coperte dallo standard HSL
+
+#### Strutture Dati Principali
+  
+  - *Stato HSL Globale*
+    ```
+    static esp_ble_mesh_light_hsl_state_t hsl_state = {
+        .lightness = 0xFFFF,      // Luminosità corrente (max)
+        .hue = 0,                 // Tonalità (0-360°)
+        .saturation = 0xFFFF,     // Saturazione (max)
+        .target_lightness = 0xFFFF,  // Valori target per transizioni
+        .target_hue = 0,
+        .target_saturation = 0xFFFF,
+        .status_code = ESP_BLE_MESH_MODEL_STATUS_SUCCESS
+    };
+    ```
+  - *Buffer Dati Sensori*: 8 buffer NetBuf statici contenenti i dati grezzi dei sensori, formattati secondo le specifiche Mesh Model.
+
+### Funzioni Principali
+
+#### Inizializzazione - ```ble_mesh_ecolumiere_init()```
+
+- Scopo: Configura e avvia lo stack BLE Mesh
+- Azioni:
+  - Registra tutte le callback necessarie
+  - Inizializza modelli (Configuration, Sensor, HSL, Vendor)
+  - Abilita provisioning su bearer ADV e GATT
+  - Accende LED verde come indicatore di stato
+
+#### Callback di Provisioning - ```example_ble_mesh_provisioning_cb()```
+
+Gestisce tutti gli eventi del processo di provisioning:
+```PROV_REGISTER_COMP_EVT```: Registrazione componenti completata
+```NODE_PROV_ENABLE_COMP_EVT```: Nodo visibile ai provisioner
+```NODE_PROV_LINK_OPEN_EVT```: Collegamento provisioning iniziato
+```NODE_PROV_COMPLETE_EVT```: **Momento critico** - provisioning completato
+```NODE_PROV_RESET_EVT```: Reset a fabbrica
+**Nota**: Al completamento del provisioning, viene chiamata ```prov_complete()``` che:
+1. Spegne LED verde
+2. Notifica il modulo slave
+3. Avvia l'acquisizione del luxmeter
+4. Inizializza i dati dei sensori
+
+#### Callback Configuration Server - ```example_ble_mesh_config_server_cb()```
+
+Gestisce la configurazione di rete inviata dal provisioner:
+- ```APP_KEY_ADD```: Aggiunge chiave di crittografia applicativa (16 byte)
+- ```MODEL_APP_BIND```: Associa AppKey a modello specifico (es: HSL usa AppKey 0x0000)
+- ```MODEL_SUB_ADD```: Sottoscrive modello a indirizzo di gruppo (es: HSL ascolta gruppo 0xC001)
+
+#### Callback Sensor Server - ```example_ble_mesh_sensor_server_cb()```
+
+Gestisce richieste di lettura sensori:
+- Risponde a ```SENSOR_GET``` con dati formattati secondo specifiche Mesh
+- Supporta richieste per singolo sensore o tutti i sensori
+- Usa ```example_ble_mesh_send_sensor_status()``` per costruire risposta
+
+#### Callback Lighting Server - ```example_ble_mesh_light_server_cb()```
+
+Gestisce controllo illuminazione HSL:
+- ```LIGHT_HSL_SET```: Imposta hue, saturation, lightness
+- ```LIGHT_HSL_GET```: Restituisce stato corrente (convertito da PWM)
+- **Conversione**: Lightness (0-100%) → PWM (0-32) via ```convert_lightness_to_pwm()```
+- **Sincronizzazione**: Aggiorna struttura NodoLampada via sync_nodo_lampada_with_hsl()
+
+#### Callback Modello Custom - ```example_ble_mesh_custom_model_cb()```
+
+Gestisce comandi vendor personalizzati:
+- Opcode: ESP_BLE_MESH_VND_MODEL_OP_SEND
+- Dati: Struttura configdata_t con parametri applicativi
+- Flusso:
+  - Riceve comando custom
+  - Converte brightness a PWM
+  - Crea evento per scheduler (SCH_EVT_BLE_MESH_RX)
+  - Invia risposta di conferma
+
+#### Funzioni di Supporto
+
+##### ```sensor_data_initialize()```
+
+Inizializza buffer sensori con valori predefiniti (prototipo) o letture reali.
+
+##### ```convert_lightness_to_pwm(uint16_t lightness)```
+
+Converte valori lightness (0-100% o 0-65535) a livello PWM (0-32) per controllo LED.
+
+##### ```example_ble_mesh_get_sensor_data()```
+
+Formatta dati sensore secondo specifiche Mesh (MPID + raw value).
+
+##### ```example_ble_mesh_send_sensor_status()```
+
+Costruisce e invia messaggio SENSOR_STATUS con dati di uno o tutti i sensori.
+
+##### ```sync_nodo_lampada_with_hsl()```
+
+Sincronizza struttura NodoLampada con stato HSL corrente, gestendo:
+- Intensità luminosa (0-100%)
+- Timestamp accensione/spegnimento
+- Registrazione eventi nel data recorder
+
+### Flusso di Controllo Luce
+
+```
+APP → [Comando HSL/Vendor] → RETE MESH → Nodo Ecolumiere
+                                        ↓
+1. Callback riceve messaggio (MODEL_OPERATION_EVT)
+2. Se HSL: aggiorna hsl_state → convert_lightness_to_pwm()
+3. Se Vendor: estrae configdata_t → crea evento scheduler
+4. Imposta PWM via pwmcontroller_set_level()
+5. Aggiorna LED fisico (board_led_operation())
+6. Sincronizza NodoLampada (sync_nodo_lampada_with_hsl())
+7. Invia risposta (MODEL_SEND_COMP_EVT)
+```
+
+### Configurazione Mesh
+
+#### Composizione Nodo
+
+```
+static esp_ble_mesh_comp_t composition = {
+    .cid = CID_ESP,              // Company ID: Espressif (0x02E5)
+    .element_count = 1,          // Singolo elemento
+    .elements = elements         // Modelli root + vendor
+};
+```
+
+#### Provisioning
+
+```
+static esp_ble_mesh_prov_t provision = {
+    .uuid = dev_uuid,            // UUID dispositivo: {0x32, 0x10}
+};
+```
+
+### Integrazione con Sistema Ecolumiere
+
+#### Scheduler
+
+Tutti i comandi BLE Mesh vengono convertiti in eventi (```ble_mesh_event_t```) e inseriti nello scheduler globale per elaborazione asincrona.
+
+#### Slave Node
+
+Al completamento provisioning, notifica ```slave_node_on_provisioned()``` per aggiornare lo stato del sistema.
+
+#### Data Recorder
+
+Registra eventi significativi (comandi ricevuti, cambiamenti stato) via ```data_recorder_enqueue_lampada_event()```.
+
+#### Hardware Control
+
+- **PWM**: ```pwmcontroller_set_level()``` per controllo intensità LED
+- **Luxmeter**: ```luxmeter_start_acquisition()``` avviato post-provisioning
+- **LED Board**: Feedback visivo stato (verde=provisioning, rosso=attivo)
+
+### Considerazioni di Sicurezza
+
+1. **AppKey Binding**: Ogni modello usa AppKey specifica per crittografia
+2. **Validazione Messaggi**: Solo messaggi crittografati con AppKey valida sono processati
+3. **Controlli Accesso**: Binding definisce quali modelli possono usare quali chiavi
+
+### Note di Sviluppo
+
+- **Buffer Sensori**: Alcuni buffer potrebbero essere dimensionati erroneamente (es: ```sensor_data_2``` dichiarato 1 byte ma contiene ```uint16_t```)
+
+- **Codice Commentato**: Sezioni per ri-abilitazione relay post-provisioning necessitano completamento
+
+- **Logging**: Sistema di log esteso per debug provisioning e operazioni mesh
+
+### Dipendenze
+
+```
+// BLE Mesh Core
+esp_ble_mesh_*              // Stack BLE Mesh ESP-IDF
+
+// Moduli Ecolumiere
+scheduler.h                 // Gestione eventi asincroni
+board.h                     // Driver hardware
+luxmeter.h                  // Sensore illuminamento
+pwmcontroller.h             // Controllo PWM LED
+slave_role.h                // Gestione ruolo slave
+ecolumiere_system.h         // Sistema principale
+datarecorder.h              // Registrazione eventi
 ```
