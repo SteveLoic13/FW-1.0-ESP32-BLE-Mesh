@@ -186,16 +186,16 @@ Questo file implementa il funzionamento del sistema BLE Meshe Ecolumiere. Combin
 Il nodo implementa tre modelli principali BLE Mesh:
 
   1. ```Modello Sensor (Standard SIG)```
-   - Scopo: Esporre letture da 8 sensori ambientali ed energetici
-   - Sensori gestiti:
-      - Temperatura interna (indoor_temp, 1 byte)
-      - Potenza istantanea assorbita (potenza_istantanea_assorbita, 2 byte, BIG ENDIAN)
-      - Umidità (humidity_sensor, 2 byte, risoluzione 0.01%)
-      - Pressione (pressure_sensor, 2 byte, risoluzione 0.01 hPa)
-      - Codice errore (error_code, 1 byte)
-      - Illuminamento (illuminance_sensor, 4 byte, lux)
-      - Tensione (voltage_sensor, 2 byte, risoluzione 0.01V)
-      - Corrente (current_sensor, 2 byte, risoluzione 0.01A)
+      - Scopo: Esporre letture da 8 sensori ambientali ed energetici
+      - Sensori gestiti:
+        - Temperatura interna (indoor_temp, 1 byte)
+        - Potenza istantanea assorbita (potenza_istantanea_assorbita, 2 byte, BIG ENDIAN)
+        - Umidità (humidity_sensor, 2 byte, risoluzione 0.01%)
+        - Pressione (pressure_sensor, 2 byte, risoluzione 0.01 hPa)
+        - Codice errore (error_code, 1 byte)
+        - Illuminamento (illuminance_sensor, 4 byte, lux)
+        - Tensione (voltage_sensor, 2 byte, risoluzione 0.01V)
+        - Corrente (current_sensor, 2 byte, risoluzione 0.01A)
 
   2. ```Modello HSL``` - Hue, Saturation, Lightness (Standard SIG)
     - Scopo: Controllo avanzato dell'illuminazione
