@@ -220,7 +220,7 @@ Il nodo implementa tre modelli principali BLE Mesh:
     };
     ```
   - Buffer Dati Sensori
-    8 buffer NetBuf statici contenenti i dati grezzi dei sensori, formattati secondo le specifiche Mesh Model.
+  8 buffer NetBuf statici contenenti i dati grezzi dei sensori, formattati secondo le specifiche Mesh Model.
 
 ### Funzioni Principali
 1. Inizializzazione - ble_mesh_ecolumiere_init()
