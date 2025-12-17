@@ -185,9 +185,9 @@ Questo file implementa il funzionamento del sistema BLE Meshe Ecolumiere. Combin
 #### Modelli Implementati
 Il nodo implementa tre modelli principali BLE Mesh:
 
-1. ```Modello Sensor (Standard SIG)```
-  - Scopo: Esporre letture da 8 sensori ambientali ed energetici
-  - Sensori gestiti:
+  1. ```Modello Sensor (Standard SIG)```
+   - Scopo: Esporre letture da 8 sensori ambientali ed energetici
+   - Sensori gestiti:
       - Temperatura interna (indoor_temp, 1 byte)
       - Potenza istantanea assorbita (potenza_istantanea_assorbita, 2 byte, BIG ENDIAN)
       - Umidità (humidity_sensor, 2 byte, risoluzione 0.01%)
@@ -197,18 +197,18 @@ Il nodo implementa tre modelli principali BLE Mesh:
       - Tensione (voltage_sensor, 2 byte, risoluzione 0.01V)
       - Corrente (current_sensor, 2 byte, risoluzione 0.01A)
 
-2. ```Modello HSL``` - Hue, Saturation, Lightness (Standard SIG)
-   Scopo: Controllo avanzato dell'illuminazione
-   Stato gestito: hsl_state con lightness (0-100%), hue (tonalità), saturation (saturazione)
-   Funzionalità: Transizioni graduali, controllo colore, impostazione target
+  2. ```Modello HSL``` - Hue, Saturation, Lightness (Standard SIG)
+    - Scopo: Controllo avanzato dell'illuminazione
+    - Stato gestito: hsl_state con lightness (0-100%), hue (tonalità), saturation (saturazione)
+    - Funzionalità: Transizioni graduali, controllo colore, impostazione target
 
-3. ```Modello Vendor Personalizzato```
-   - Scopo: Comandi custom specifici del sistema Ecolumiere
-   - Struttura dati: configdata_t con brightness, color_temp, RGB, dimStep
-   - Uso: Configurazioni avanzate non coperte dallo standard HSL
+  3. ```Modello Vendor Personalizzato```
+    - Scopo: Comandi custom specifici del sistema Ecolumiere
+    - Struttura dati: configdata_t con brightness, color_temp, RGB, dimStep
+    - Uso: Configurazioni avanzate non coperte dallo standard HSL
 
 #### Strutture Dati Principali
-  - Stato HSL Globale
+  - *Stato HSL Globale*
     ```
     static esp_ble_mesh_light_hsl_state_t hsl_state = {
         .lightness = 0xFFFF,      // Luminosità corrente (max)
@@ -220,7 +220,7 @@ Il nodo implementa tre modelli principali BLE Mesh:
         .status_code = ESP_BLE_MESH_MODEL_STATUS_SUCCESS
     };
     ```
-  - Buffer Dati Sensori: 8 buffer NetBuf statici contenenti i dati grezzi dei sensori, formattati secondo le specifiche Mesh Model.
+  - *Buffer Dati Sensori*: 8 buffer NetBuf statici contenenti i dati grezzi dei sensori, formattati secondo le specifiche Mesh Model.
 
 ### Funzioni Principali
 1. Inizializzazione - ble_mesh_ecolumiere_init()
