@@ -185,7 +185,7 @@ Questo file implementa il funzionamento del sistema BLE Meshe Ecolumiere. Combin
 #### Modelli Implementati
 Il nodo implementa tre modelli principali BLE Mesh:
 
-```Modello Sensor (Standard SIG)```
+1. ```Modello Sensor (Standard SIG)```
   - Scopo: Esporre letture da 8 sensori ambientali ed energetici
   - Sensori gestiti:
       - Temperatura interna (indoor_temp, 1 byte)
@@ -197,17 +197,17 @@ Il nodo implementa tre modelli principali BLE Mesh:
       - Tensione (voltage_sensor, 2 byte, risoluzione 0.01V)
       - Corrente (current_sensor, 2 byte, risoluzione 0.01A)
 
-  2. Modello HSL - Hue, Saturation, Lightness (Standard SIG)
+2. ```Modello HSL``` - Hue, Saturation, Lightness (Standard SIG)
    Scopo: Controllo avanzato dell'illuminazione
    Stato gestito: hsl_state con lightness (0-100%), hue (tonalità), saturation (saturazione)
    Funzionalità: Transizioni graduali, controllo colore, impostazione target
 
-  3. Modello Vendor Personalizzato
-   Scopo: Comandi custom specifici del sistema Ecolumiere
-   Struttura dati: configdata_t con brightness, color_temp, RGB, dimStep
-   Uso: Configurazioni avanzate non coperte dallo standard HSL
+3. ```Modello Vendor Personalizzato```
+   - Scopo: Comandi custom specifici del sistema Ecolumiere
+   - Struttura dati: configdata_t con brightness, color_temp, RGB, dimStep
+   - Uso: Configurazioni avanzate non coperte dallo standard HSL
 
-- Strutture Dati Principali
+#### Strutture Dati Principali
   - Stato HSL Globale
     ```
     static esp_ble_mesh_light_hsl_state_t hsl_state = {
