@@ -176,53 +176,39 @@ Si consiglia di eseguire la scansione dei nodi due volte al giorno, al mattino e
 └── 📄 README.md                    # Documentazione principale
 ```
 
+## ble_mesh_ecolumiere.c - Sistema BLE Mesh per Illuminazione Intelligente Ecolumiere
+### Panoramica
+Questo file implementa il funzionamento del sistema BLE Meshe Ecolumiere. Combina modelli standard (Sensor, HSL) con un modello vendor personalizzato per gestire controllo luci, monitoraggio sensori e comandi applicativi specifici.
 
-ble_mesh_ecolumiere.c - Sistema BLE Mesh per Illuminazione Intelligente Ecolumiere
-Panoramica
-Questo file implementa il nodo BLE Mesh per il sistema di illuminazione intelligente Ecolumiere. Combina modelli standard (Sensor, HSL) con un modello vendor personalizzato per gestire controllo luci, monitoraggio sensori e comandi applicativi specifici.
+### Architettura del Nodo
 
-Architettura del Nodo
-1. Modelli Implementati
+- Modelli Implementati
 Il nodo implementa tre modelli principali BLE Mesh:
+1. Modello Sensor (Standard SIG)
+   Scopo: Esporre letture da 8 sensori ambientali ed energetici
+   Sensori gestiti:
+      - Temperatura interna (indoor_temp, 1 byte)
+      - Potenza istantanea assorbita (potenza_istantanea_assorbita, 2 byte, BIG ENDIAN)
+      - Umidità (humidity_sensor, 2 byte, risoluzione 0.01%)
+      - Pressione (pressure_sensor, 2 byte, risoluzione 0.01 hPa)
+      - Codice errore (error_code, 1 byte)
+      - Illuminamento (illuminance_sensor, 4 byte, lux)
+      - Tensione (voltage_sensor, 2 byte, risoluzione 0.01V)
+      - Corrente (current_sensor, 2 byte, risoluzione 0.01A)
 
-a) Modello Sensor (Standard SIG)
-Scopo: Esporre letture da 8 sensori ambientali ed energetici
+3. Modello HSL - Hue, Saturation, Lightness (Standard SIG)
+   Scopo: Controllo avanzato dell'illuminazione
+   Stato gestito: hsl_state con lightness (0-100%), hue (tonalità), saturation (saturazione)
+   Funzionalità: Transizioni graduali, controllo colore, impostazione target
 
-Sensori gestiti:
+4. Modello Vendor Personalizzato
+   Scopo: Comandi custom specifici del sistema Ecolumiere
+   Struttura dati: configdata_t con brightness, color_temp, RGB, dimStep
+   Uso: Configurazioni avanzate non coperte dallo standard HSL
 
-Temperatura interna (indoor_temp, 1 byte)
-
-Potenza istantanea assorbita (potenza_istantanea_assorbita, 2 byte, BIG ENDIAN)
-
-Umidità (humidity_sensor, 2 byte, risoluzione 0.01%)
-
-Pressione (pressure_sensor, 2 byte, risoluzione 0.01 hPa)
-
-Codice errore (error_code, 1 byte)
-
-Illuminamento (illuminance_sensor, 4 byte, lux)
-
-Tensione (voltage_sensor, 2 byte, risoluzione 0.01V)
-
-Corrente (current_sensor, 2 byte, risoluzione 0.01A)
-
-b) Modello HSL - Hue, Saturation, Lightness (Standard SIG)
-Scopo: Controllo avanzato dell'illuminazione
-
-Stato gestito: hsl_state con lightness (0-100%), hue (tonalità), saturation (saturazione)
-
-Funzionalità: Transizioni graduali, controllo colore, impostazione target
-
-c) Modello Vendor Personalizzato
-Scopo: Comandi custom specifici del sistema Ecolumiere
-
-Struttura dati: configdata_t con brightness, color_temp, RGB, dimStep
-
-Uso: Configurazioni avanzate non coperte dallo standard HSL
-
-2. Strutture Dati Principali
-Stato HSL Globale
-c
+- Strutture Dati Principali
+  Stato HSL Globale
+```
 static esp_ble_mesh_light_hsl_state_t hsl_state = {
     .lightness = 0xFFFF,      // Luminosità corrente (max)
     .hue = 0,                 // Tonalità (0-360°)
@@ -232,10 +218,12 @@ static esp_ble_mesh_light_hsl_state_t hsl_state = {
     .target_saturation = 0xFFFF,
     .status_code = ESP_BLE_MESH_MODEL_STATUS_SUCCESS
 };
-Buffer Dati Sensori
-8 buffer NetBuf statici contenenti i dati grezzi dei sensori, formattati secondo le specifiche Mesh Model.
+```
 
-Funzioni Principali
+- Buffer Dati Sensori
+  8 buffer NetBuf statici contenenti i dati grezzi dei sensori, formattati secondo le specifiche Mesh Model.
+
+### Funzioni Principali
 1. Inizializzazione - ble_mesh_ecolumiere_init()
 Scopo: Configura e avvia lo stack BLE Mesh
 
