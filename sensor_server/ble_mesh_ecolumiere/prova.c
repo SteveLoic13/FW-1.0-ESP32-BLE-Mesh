@@ -55,7 +55,7 @@ static const char *TAG = "BLE_MESH_ECOLUMIERE";
 // Questi valori rappresentano dati di sensori fittizi utilizzati per il
 // prototipo del sistema. In un'implementazione reale verrebbero sostituiti
 // con letture da sensori fisici.
-static int8_t indoor_temp = 40;                 /* Temperatura interna: 20°C (risoluzione 0.5??) */
+static int8_t indoor_temp = 40;                 /* Temperatura interna: 20°C (risoluzione 0.5) */
 static uint16_t potenza_istantanea_assorbita = 2410; /* Potenza assorbita in Watt (BIG ENDIAN) */
 static uint16_t humidity_sensor = 10000;        /* Umidità: 100% con risoluzione 0.01% */
 static uint16_t pressure_sensor = 10000;        /* Pressione: 1000.00 hPa con risoluzione 0.01 hPa */
@@ -94,7 +94,7 @@ esp_ble_mesh_cfg_srv_t config_server = {
 // Ogni buffer corrisponde a un diverso tipo di misurazione sensoriale.
 NET_BUF_SIMPLE_DEFINE_STATIC(sensor_data_0, 1);    // Temperatura (1 byte)
 NET_BUF_SIMPLE_DEFINE_STATIC(sensor_data_1, 2);    // Potenza istantanea (2 byte, BIG ENDIAN)
-NET_BUF_SIMPLE_DEFINE_STATIC(sensor_data_2, 1);    // Umidità (1 byte) POSSIBILE BUG SEGNALATO DA DEEPSEEK. IL BUFFER SEMBRA ESSERE TROPPO PICCOLO humidity_sensor che è uint16_t
+NET_BUF_SIMPLE_DEFINE_STATIC(sensor_data_2, 2);    // Umidità (2 byte) 
 NET_BUF_SIMPLE_DEFINE_STATIC(sensor_data_3, 2);    // Pressione (2 byte)
 NET_BUF_SIMPLE_DEFINE_STATIC(sensor_data_4, 1);    // Codice errore (1 byte)
 NET_BUF_SIMPLE_DEFINE_STATIC(sensor_data_5, 2);    // Illuminamento (2 byte)
@@ -623,7 +623,7 @@ static void example_ble_mesh_custom_model_cb(esp_ble_mesh_model_cb_event_t event
                 // Estrae la luminosità (0-100%)
                 uint8_t brightness_percent = cfg->brightness;
 
-                // ?? Gestione speciale per brightness=1 (forse indica OFF?)
+                // Gestione speciale per brightness=1 (la piattaforma non accetta il valore 0)
                 if(cfg->brightness == 1){
                     brightness_percent = 0;
                 }
@@ -1156,7 +1156,7 @@ void sync_nodo_lampada_with_hsl(uint16_t hue, uint16_t saturation, uint16_t ligh
         ESP_LOGI(TAG, "⏰ Spegnimento registrato");
     }
 
-    // Salva lo stato aggiornato ?? SLAVE?
+    // Salva lo stato aggiornato
     slave_node_update_lampada_data(&lampada_aggiornata);
 
     // Registra l'evento nel data recorder
